@@ -1,0 +1,140 @@
+xy.stat.tot
+n
+y
+4  ----- cf
+1
+0 3000
+4    
+cf.data
+5   ----- h12
+1
+0 3000
+4
+h12.data
+7   ----- Re
+1
+0 3000
+4
+re.data
+18   ----- dthetadx
+1
+0 3000
+4
+dthdx.data
+19   ---- shear
+1
+0 3000
+4
+shear.data
+0  ====================
+1    ----- u
+y
+8
+u.data
+0
+2
+1
+200.
+0
+1
+0
+31    -----  pinf
+y
+8
+p.data
+0
+2
+1
+200.
+0
+1
+0
+32    -----  prmsw
+y
+8
+prmswall.data
+0
+2
+1
+0.
+0
+1
+0
+31    -----  pw
+y
+8
+pwall.data
+0
+2
+1
+0.
+0
+1
+0
+-14    -----  dudx
+y
+8
+dudx.data
+0
+2
+1
+200.
+0
+1
+0
+12    -----  taurms
+y
+8
+taurms.data
+0
+2
+1
+0.
+2
+1
+0
+-17    -----  dudy
+y
+8
+dudy.data
+0
+2
+1
+0.
+0
+1
+0
+-115    -----  dpdx
+y
+8
+dpdx.data
+0
+2
+1
+200.
+0
+1
+0
+-81    -----   delta
+y
+8
+delta.data
+0
+2
+1
+200.
+0
+1
+0
+-71    -----   delta
+y
+8
+urmsmax.data
+0
+2
+1
+200.
+2
+1
+0
+0     ------

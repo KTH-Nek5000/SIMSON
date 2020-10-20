@@ -1,0 +1,47 @@
+# README file to start generating the different movies in the hairpin directory
+
+1. The header of the driver.py file needs to include the proper path to pvpython.
+On skagsnebb this should be: #!/pkg/paraview/3.10/bin/pvpython
+On MacBook Pro this should be: #!/usr/local/bin/pvpython
+
+2. Stationary DNS data. To start the image rendering run the command in the hairpin directory
+./driver.py movie_hairpin_stationary_dns.dat
+
+3. Transient LES data. Do the following
+   Comment out the following line in driver.py
+   setup_movie.compute_orbit(sfiles,tfile,indir)
+   cp traj_transient_les.dat traj_transient.dat
+   Remove circle in paraviewscript file __init__.py
+   Comment out line "import circle" in header of setup_movie.py
+   ./driver.py movie_hairpin_transient_les.dat
+
+   The following parameter file are used:
+   singe_frame_hairpin_contour_les.py
+   movie_hairpin_transient_les.dat
+   scene_hairpin_transient_01.dat
+   scene_hairpin_transient_02.dat
+   scene_hairpin_transient_03.dat
+   scene_hairpin_transient_04.dat
+   scene_hairpin_transient_05.dat
+
+4. High altitude LES data flyby. Do the following
+   ./driver.py movie_high_altitude_les.dat
+
+   Files:
+   singe_frame_hairpin_contour_les.py
+   movie_high_altitude_les.dat
+   scene_hairpin_high_altitude_les.dat
+
+5. High altitude DNS data flyby. Do the following
+   ./driver.py movie_high_altitude_dns.dat
+
+   Files:
+   singe_frame_hairpin_contour_dns.py
+   movie_high_altitude_dns.dat
+   scene_hairpin_high_altitude_dns.dat
+
+# Test purposes skagsnebb
+export PYTHONPATH=/usr/lib/python2.5/site-packages/:$PYTHONPATH
+
+# MacBook Pro
+export PYTHONPATH=/usr/local/ParaView\ 3.8.1.app/Contents/Python/paraview/:$PYTHONPATH

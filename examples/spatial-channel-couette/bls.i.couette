@@ -1,0 +1,26 @@
+init.u
+3000.         re for delta star
+48.           xl in delta star
+2.            2h in delta star
+24.           zl in delta star
+fsc.dat
+5             Flow type (Spatial Couette) (fltype)
+35.           Blending start (bstart)
+13.           Blending length (blength)
+.false.       Perturbation mode (pert)
+-1.0          Shift velocity of box (ushift)
+.true.        Localized perturbation (locdi)
+4             (ditype)
+0.1           Amplitude (amp)
+0.0           Rotation in horizontal direction (theta)
+1.0           (xscale)
+10.           (xloc0)
+1.0           (yscale)
+2.0           (zscale)
+6             (ipoly)
+.false.       Gaussian perturbation (gaussian)
+.false.       Waves (waves)
+.false.       OS modes (os)
+.false.       Spectral space mode (specm)
+.false.       Perturbations from file (pertfromfile)
+.false.       Noise (noise)

@@ -1,0 +1,131 @@
+#!/bin/bash
+script="$0"
+scriptshort="`basename $0`"
+
+usage() {
+cat <<EOF
+  Usage: $scriptshort [-p proc_per_node] [-l] program [arg1 [arg2 [...]]]
+	Switches accepted by this script (must preceed program name)
+		-p proc_per_node	Use this number of MPI processes per node (Default is -p 1)
+		-l			Save program output into a logfile in the current directory
+
+  Typical usage:
+	esubmit -n 4 -t 60 $scriptshort -p 2 ./my_mpi_prog --iterations=35
+
+EOF
+}
+
+#defaults
+procpernode=1
+logfile=""
+error=""
+
+# Process script arguments
+while [ $# -gt 0 ]
+do 
+  case "$1" in
+    -p*) procpernode="$2"; 
+         [[ "$2" == *[^0-9]* ]] && error="proc_per_node ($2) not a number!";
+         shift;;
+    -l)  logfile=1;;
+    -*)  error="Unknown option $1";;
+    *) break;;
+  esac
+  shift
+done
+#Compute correct number of processes to use
+np=$(( $procpernode * ${SP_PROCS-0} ))
+
+if [ -n "$1" ]; then
+  prog="$1"
+else
+  error="No program to run specified"
+fi
+
+# Catch any user errors and bail...
+if [ -n "$error" ]; then
+     echo ""
+     echo "  $scriptshort: ERROR:: $error"
+     echo ""
+     usage
+     exit 255
+fi
+
+
+prog="`type -p $1`" || {
+     echo "${scriptshort}: ERROR:: Program $1 not in PATH"; 
+     echo "${scriptshort}: Current PATH=$PATH"
+     prog=/bin/false;
+     exit 255
+     }
+
+# Begin execution
+
+echo "Script $script initiated at `date` on `hostname`"
+echo ""
+echo "Running in directory `pwd`"
+echo ""
+echo "Authorization information:"
+if [ -x /usr/heimdal/bin/klist ]; then
+  /usr/heimdal/bin/klist -Tf
+else
+  klist ; tokens
+fi
+echo ""
+
+# The MPICH library stores the configure line in the library. Use the
+# --prefix as an indication as to where to find the right mpirun
+# strings get all strings, sed matches -prefix= in \1 and the path in \2
+
+mpihome=`strings $prog | sed -n 's/^.*\(-prefix=\{1,\} *\)\([^ ]*\).*$/\2/p'`
+mpirun=$mpihome/bin/mpirun
+
+if [ ! -d "$mpihome" ]; then
+  echo "Error: '$mpihome' is not a valid directory"
+fi
+
+if [ ! -x "$mpirun" ]; then
+  echo "Error: '$mpirun' is not an executable file"
+fi
+
+if [ ! -x "$prog" ]; then
+  echo "Error: '$prog' submitted by the user is not an executable file"
+fi
+
+if [ -z "$mpihome" -o ! -x $mpirun ]; then
+  echo Could not automatically detect a suitable MPICH implementation.
+  echo ""
+  echo "  --- DEBUG INFORMATION"
+  echo ""
+  echo "Examining the following user-supplied executable:"
+  ls -ld $prog | sed 's/^/INFO:  /'
+  echo ""
+  echo "Checking for -prefix= in $prog:"
+  strings $prog | ( grep -- -prefix= || echo Not found )
+  echo ""
+  echo "  --- END OF DEBUG INFORMATION"
+
+  echo ""
+  echo "The automatic detection af the correct MPICH installation failed."
+  echo "Consider submitting your program using a batch file that uses a"
+  echo "hard-coded MPICH installation path."
+  exit 1
+fi
+
+if [ -n "$logfile" ]; then
+  # Use process number if interactive or JID missing
+  num=${SP_JID-0}             # Interactive jobs have JID 0
+  [ $num -eq 0 ] && num=$$    
+
+  logfile="${SP_INITIALDIR-.}/${scriptshort}_${num}.out"
+  logfile="${SP_INITIALDIR-.}/bla.out"
+  logfile=" 2>&1 1>$logfile"
+fi
+
+echo "Using MPICH in $mpihome:"
+echo "$mpirun -np $np -machinefile $SP_HOSTFILE $@ $logfile"
+echo ""
+eval $mpirun -np $np -machinefile $SP_HOSTFILE "$@" "$logfile"
+
+echo ""
+echo "Program ran to completion at `date`"

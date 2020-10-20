@@ -1,0 +1,133 @@
+#!/bin/csh
+# ***********************************************************************
+# 
+# $HeadURL$
+# $LastChangedDate$
+# $LastChangedBy$
+# $LastChangedRevision$
+#
+# ***********************************************************************
+# Simple runscript for bla. The start field is assumed to be in either
+# - inter.u.X (with X an integer number lower than 50)
+# - init.u
+# - run bls to create init.u
+#
+# The script copies over the end file to inter.u.{X+1}, and 
+# the statistics etc. to
+# xy.stat.{X+1}, step.{X+1}, ser.stat.{X+1}, corr.stat.{X+1}, history.{X+1}
+#
+# The bla.i needs to be as follows:
+# initial field: start.uu
+# end field: end.uu
+# statistics: xy.stat
+# correlations: corr.stat
+# time series: ser.stat
+#
+# Philipp Schlatter, 2007
+#
+#------------------------------------------------
+
+# move to the appropriate directory
+#cd ~/scratch/LES/script
+
+# indicates that the script is running
+touch running
+
+# output is appended to script.out
+echo BLA RUNSCRIPT
+echo -------------------------
+pwd
+date
+echo -------------------------
+
+echo BLA RUNSCRIPT >> script.out
+echo ------------------------->> script.out
+pwd  >> script.out
+date >> script.out
+echo ------------------------->> script.out
+
+# determine highest existing intermediate field
+foreach i (61 60 59 58 57 56 55 54 53 52 51 50 49 48 47 46 45 44 43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0  )
+  if ( -e inter.u.${i} ) then
+        break
+  endif
+end
+
+# Presently, 60 is the maximum number of fields. This is set to
+# avoid redoing over and over calculation 61.
+if ( $i > 60 ) then
+	echo Nothing to do. Job $i is too big
+	echo Nothing to do. Job $i is too big >> script.out
+else
+
+# Check if the initial file exists. Otherwise run bls or copy init.u
+        if ( -e inter.u.${i} ) then
+        else
+          if ( -e init.u ) then
+          else
+            echo First do bls
+	    echo First do bls >> script.out
+            ./bls
+          endif
+          mv init.u inter.u.0
+        endif
+
+# Prepare the run by deleting old working files
+	rm -f start.uu
+	ln -s inter.u.${i} start.uu
+	rm -f history
+	rm -f step
+	rm -f end.uu
+	rm -f end.uu.p
+
+	echo Starting job from inter.u.$i
+	echo Starting job from inter.u.$i >> script.out
+
+# Run the job. Here use the appropriate command for the architecture
+# this is for Lucidor:
+      ./mpich.lxl -p 2 -l ./bla.lucidor	
+# this is for Lenngren:
+#     /opt/scali/bin/mpirun -np 64 -npn 2 -inherit_limits ./bla.lenngren > bla.out
+
+# Job has finished
+	echo -- job $i finished
+	echo -- job $i finished >> script.out
+
+	set next = "`expr ${i} + 1`"
+
+# Copy output files
+	mv -f bla.out bla.out.${next}
+	if( -e end.uu ) then
+    		echo -- output from job $i detected
+    		echo -- output from job $i detected >> script.out
+
+                mv -f end.uu inter.u.${next}
+		mv -f end.uu.p inter.u.p.${next}
+                mv -f xy.stat xy.stat.${next}
+		mv -f corr.stat corr.stat.${next}
+		mv -f ser.stat ser.stat.${next}
+                mv -f step step.${next}
+                mv -f history history.${next}
+                rm -f start.uu
+
+   	        echo -- output copied in XXX.${next}
+   	        echo -- output copied in XXX.${next} >> script.out
+
+
+# Here you could add a resubmit command (not needed on Lenngren)
+
+        endif
+
+
+endif
+
+
+echo Script finished
+echo Script finished >> script.out
+echo >> script.out
+
+rm -f running
+
+
+
+

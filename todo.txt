@@ -1,0 +1,82 @@
+==========================================================
+Things that need to be fixed in Simson $Rev$
+==========================================================
+
+20070205  Luca     Extend the manual with
+                   - maybe extend the section about boundary conditions
+
+20060919  Philipp  Add saving of yz-planes in bla
+
+20060929  Mattias  y-integration of statistics (in pxyst)
+
+20070205  Antonios Do a clean compensator version and try
+                   to merge it with the main code
+
+20070205**Lars-Uve Fix parallelisation of the wall roughness
+
+20070205* Lars-Uve Parallelisation of ffun
+
+20070207**Mattias  When theta=0 the value of w for z=-zl/2 should be zero
+                   otherwise the spanwise symmetry is broken???
+                   (this error is on the level of that the gaussian envelope
+                   of the localized disturbance doesn't go to zero at the
+                   boxedge)
+
+20080507  Mattias  Make definition of all constants consistent in cvecfft
+		   (grep 71)
+
+==========================================================
+Resolved issues
+==========================================================
+20060928  Mattias  Completed the configuration feature for
+                   installation and compilation (r190)
+
+20061003  Mattias  Added mean-flow subtraction in rit (r222)
+
+20061009  Mattias  Removed double precision converter fsdf
+                   and its appearance in all Makefile.config
+                   and the manual (r263)
+
+20061128  Philipp  Resolved in r352-357:
+                   Figure out/clean the different bls versions
+                   - bls (version 1.8) using fskch.f ==> RENAMED bls-old
+                   - bls-heat (based on version 1.9) using fsc.f
+                   - fskanc/bls1.5 (version 1.5) using fskanc.f ==> REMOVED
+                   and add option to read similarity solution table
+                   written by fskanc.f/fsc.f in bla. ==> DONE
+                   Shall we keep the Chebyshev tau version fskch? ==> REMOVED
+
+20061128  Philipp  Implemented statistics of scalar in boxxyst
+
+20061207  Mattias  Corrected parallel flow forcing for FSC
+                   flows (r400-401,r406-412)
+
+20070205  Philipp  Finished/tested the combined channel/boundary
+                   layer version
+
+20070207  Mattias  Included necessary features from sta and
+                   sta-heat into bls and removed sta and
+                   sta-heat (r471-473)
+
+20070207  Philipp  Combined fou with fouLX
+
+20070528  Shervin  Included jet-in-crossflow in main version at r587.
+
+200706??  Philipp  Added constant mass-flux for channel flow in r???.
+
+20071110  Philipp  Extend the manual with
+                   - LES (done)
+                   - scalar (done, could however be extended)
+                   - SFD (done)
+                   - linearised/perturbation version (done)
+		   - MHD (done)
+		   - Parallelisation 6.3 (done)
+
+20071120  Mattias  Checked all flow types for 
+          Philipp  consistency (incl. channel/bl etc.)
+
+20071120  Mattias  Test problems added for each nice test case,
+          Philipp  running with the latest bla.i/par.f.
+
+20071120  Mattias  Checked two-dimensional simulations
+          Philipp

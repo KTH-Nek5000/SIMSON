@@ -1,0 +1,30 @@
+# Simson ParaView scene file version
+1.0
+# Number of frames
+5
+# Colormap
+colormap_r2.xml
+# Camera position
+3
+6.0 8.54 4.46
+-12.0 18.75 -6.5
+-27.0 15.47 -8.7
+# Focal position
+2
+20.0 5.0 0.0
+20.0 5.0 0.0
+# Zoom
+2
+4.5
+4.5
+# Camera view up vector
+2
+0.205 0.956 -0.208
+0.205 0.956 -0.208
+# Files: start (four digits), step length (in image numbering), number of frames for each field, name of field
+650
+1
+5
+field.*.u.vtk
+# Closed spline [0 = open, 1 = closed]
+1

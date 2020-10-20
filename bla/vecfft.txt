@@ -1,0 +1,1563 @@
+c ***********************************************************************
+c
+c $HeadURL$
+c $LastChangedDate$
+c $LastChangedBy$
+c $LastChangedRevision$
+c
+c ***********************************************************************
+
+                      VECFFT
+
+    A package of fast vectorizable multiple transform
+
+    version 1.1 september 1993
+    version 1.0 august 1991
+    version 0  mars 1990
+                  
+    By Anders Lundbladh, FFA, S-16111 Bromma, Sweden
+    & Dan Henningson, MIT, Cambridge, MA 02139
+
+    This is free software, it comes with no guarantees
+    whatsoever.  Problems can be reported to the
+    authors by email at alu@nada.kth.se or
+    henning@math.mit.edu , but no action is promised.
+
+    The development of this library has been sponsored in full
+    by the Aeronautical Research Institute of Sweden (FFA)
+  
+    This is an extension/specialization of FFTPACK, version 4.
+    FFTPACK was written by Paul N Swarztrauber,  
+    National Center for Atmospheric Research, Boulder, Colorado 80307.
+    FFTPACK was obtained from netlib and extensions made without
+    interaction with the original author.
+
+  * The routines have been made vectorizable on an independent (non-fft)  
+    direction so that multiple independent transform can be performed fast.
+  * The emphasis has been put on the highest possible speed for the
+    case when :
+        1. The number of independent transforms is approximately
+           equal to the length of the transforms, and this number
+           is large enough to get the optimum vector operation speed.
+        2. The hardware executes multiplications and additions in
+           approximately the same time and when this time is shorter 
+           or equal to the time for a memory access.
+        3. There are 8 or more vector registers or equivalent
+           available or when the vectors go directly in and
+           out of memory.
+        4. A highly optimizing compiler such as cft77 is used.
+           Certain temporaries have been eliminated since
+           it is assumed the compiler will create its own.
+  * Factors of 6 and 8 have been added for speed (not yet for real cases).
+  * Prime factors larger than 5 have been discarded.
+  * The simplified real and the quarterwave transforms have been discarded.
+  * To the package has been added the following extensions
+        1. Chebyshev transform routines
+        2. Symmetric and antisymmetric complex transforms
+  * version 1.0 : no bugs have been reported for more than one year,
+                  i.e. known bugs are fixed
+  * version 1.1 : vectorization without directives for FACOM VP
+                  and CRAY
+  changes : 900508 corrections to the definitions of vchbf
+            900516 cosine based transforms 10% faster
+            900517 workspace for cosine,sine based transforms reduced
+            900618 bugs when integer and real have different sizes fixed
+            900619 bugs when specifying ifail = 0 constant fixed
+     v1.1:  930921 some tabs were removed an replaced by blanks
+                   directive free vectorization by partial rewrite
+                   new corrections to the definitions of vchbf
+                   new routines of vcossi, vchsf and vchsb for
+                   staggered grid
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+This package consists of programs which perform fast fourier
+transforms for both complex and real periodic sequences and
+certain other symmetric sequences that are listed below.
+
+1.   vrffti     initialize  vrfftf and vrfftb
+2.   vrfftf     forward transform of real periodic sequences
+3.   vrfftb     unnormalized inverse of vrfftf
+
+4.   vsinti     initialize vsint, vcftaf and vcftab
+5.   vsint      sine transform of real odd sequences
+
+6.   vcosti     initialize vcost, vchbf, vchbb, vcffts
+7.   vcost      cosine transform of real even sequences
+8.   vchbf      chebyshev transform of real sequences
+9.   vchbb      unnormalized inverse of vchbf
+
+10.  vcffti     initialize vcfftf and vcfftb
+11.  vcfftf     forward transform of complex periodic sequences
+12.  vcfftb     unnormalized inverse of vcfftf
+
+13.  vcffts     transform of complex symmetric sequences
+
+14.  vcftaf     transform of complex antisymmetric sequences
+15.  vcftab     unnormalized inverse of vcftaf
+ 
+
+16.   vcossi     initialize vchsf, vchsb
+17.   vchsf      chebyshev transform of real sequences for STAGGER grid
+18.   vchsb      unnormalized inverse of vchsf
+
+******************************************************************
+
+subroutine vrffti(n,wsave,ifail)
+
+******************************************************************
+
+subroutine vrffti initializes the array wsave which is used in
+both vrfftf and vrfftb. the prime factorization of n together with
+a tabulation of the trigonometric functions are computed and
+stored in wsave.
+
+input parameters
+
+n       the length of the sequence to be transformed.
+        n must be even and contain only prime factors 2,3,5
+
+ifail   see error handling below
+
+output parameters
+
+wsave   a work array which must be dimensioned at least n+15.
+        the same work array can be used for both vrfftf and vrfftb
+        as long as n remains unchanged. different wsave arrays
+        are required for different values of n. the contents of
+        wsave must not be changed between calls of vrfftf or vrfftb.
+
+ifail   see error handling below
+
+******************************************************************
+
+subroutine vrfftf(cr,ci,wr,wi,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vrfftf computes the fourier coefficients of real
+periodic sequences (fourier analysis). the transform is defined
+below at output parameters cr,ci.
+
+for description of use of n,m,inc,jmp see application tips below,
+for performance improvement see speed tips below
+
+input parameters
+
+cr,ci   real arrays containing the odd and the even points to be
+        transformed
+
+n       the length of the sequences to be transformed.  
+        n must be even and contain only prime factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform
+        direction in either cr or ci
+
+jmp     the distance between the same element in two independent
+        sequences in either cr or ci
+
+wsave   a work array which must be dimensioned at least n+15.
+        in the program that calls vrfftf. the wsave array must be
+        initialized by calling subroutine vrffti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+        the same wsave array can be used by vrfftf and vrfftb.
+
+
+output parameters
+
+cr,ci   the real and imaginary part of the positive wavenumber
+        half of the spectrum
+
+cr      for j = 1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+          for k = 1,...,n/2+1
+
+             cr(jj+inc*(k-1)) = the sum from i = 1 to i = n/2 of
+
+                  cr(jj+inc*(i-1))*cos((k-1)*(2*i-2)*2*pi/n)+
+                  ci(jj+inc*(i-1))*cos((k-1)*(2*i-1)*2*pi/n)
+
+
+ci      for j = 1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+          
+          for k =1,...,n/2
+
+             ci(jj+inc*(k-1)) = the sum from i = 1 to i = n/2 of
+
+                 -cr(jj+inc*(i-1))*sin((k-1)*(2*i-2)*2*pi/n)
+                 -ci(jj+inc*(i-1))*sin((k-1)*(2*i-1)*2*pi/n)
+
+                 
+wr,wi   workspaces of the same size as cr,ci above
+        the routine destroys the values of
+        wr(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n/2+1, j = 1,...,m
+        wi(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n/2, j = 1,...,m
+
+ *****  note
+             this transform is unnormalized since a call of vrfftf
+             followed by a call of vrfftb will multiply the input
+             sequence by n.
+
+******************************************************************
+
+subroutine vrfftb(cr,ci,wr,wi,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vrfftb computes real periodic sequences from their
+fourier coefficients (fourier synthesis). the transform is defined
+below at output parameter cr,ci.
+
+for description of use of n,m,inc,jmp see application tips below,
+for performance improvement see speed tips below
+
+input parameters
+
+cr,ci   real arrays containing the real and imaginary parts of the
+        positive wavenumber half of the spectrum
+
+
+n       the length of the sequences to be transformed.  
+        n must be even and contain only prime factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform
+        direction in either cr or ci
+
+jmp     the distance between the same element in two independent
+        sequences in either cr or ci
+
+wsave   a work array which must be dimensioned at least n+15.
+        in the program that calls vrfftb. the wsave array must be
+        initialized by calling subroutine vrffti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+        the same wsave array can be used by vrfftf and vrfftb.
+
+
+output parameters
+
+cr,ci    the odd and the even points of the real sequences
+
+cr       for j = 1,...,m
+
+           let jj = 1+jmp*(j-1) (start of jth sequence)
+
+           for n even and for i = 1,...,n/2
+
+               cr(jj+inc*(i-1)) = cr(1)+cr(n/2+1)
+
+                  plus the sum from k=2 to k=n/2 of
+
+                   2.*cr(jj+inc*(k-1))*cos((k-1)*(2*i-2)*2*pi/n)
+
+                  -2.*ci(jj+inc*(k-1))*sin((k-1)*(2*i-2)*2*pi/n)
+
+           cr(jj+inc*(n/2)) = 0.0
+         
+
+ci       for j = 1,...,m
+
+           let jj = 1+jmp*(j-1) (start of jth sequence)
+
+           for n even and for i = 1,...,n/2
+
+               ci(jj+inc*(i-1)) = cr(1)-cr(n/2+1)
+
+                  plus the sum from k=2 to k=n/2 of
+
+               	    2.*cr(jj+inc*(k-1))*cos((k-1)*(2*i-1)*2*pi/n)
+ 
+                   -2.*ci(jj+inc*(k-1))*sin((k-1)*(2*i-1)*2*pi/n)
+
+           ci(jj+inc*(n/2)) = 0.0
+
+                 
+wr,wi   workspaces of the same size as cr,ci above
+        the routine destroys the values of
+        wr(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n/2+1, j = 1,...,m
+        wi(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n/2, j = 1,...,m
+
+ *****  note
+             this transform is unnormalized since a call of vrfftf
+             followed by a call of vrfftb will multiply the input
+             sequence by n.
+
+
+******************************************************************
+
+subroutine vsinti(n,wsave,ifail)
+
+******************************************************************
+
+subroutine vsinti initializes the array wsave which is used in
+subroutine vsint, vcftaf and vcftab. the prime factorization of
+n together with a tabulation of the trigonometric functions are
+computed and stored in wsave.
+
+vsinti calls routines in the file vrffti.f which must be 
+included for compilation.
+
+input parameters
+
+n       the length of the sequence to be transformed.
+        must be odd and n+1 can only contain factors 2,3,5
+
+ifail   see error handling below
+
+output parameters
+
+wsave   a work array with at least int(1.5*n+15) locations.
+        different wsave arrays are required for different values
+        of n. the contents of wsave must not be changed between
+        calls of vsint, vcftaf and vcftab.
+
+ifail   see error handling below
+
+******************************************************************
+
+subroutine vsint (x,w,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vsint computes the discrete fourier sine transform
+of odd sequences. the transform is defined below at
+output parameter x.
+
+vsint is the unnormalized inverse of itself since a call of vsint
+followed by another call of vsint will multiply the input sequence
+x by 2*(n+1).
+
+for description of use of n,m,inc,jmp see application tips below,
+for performance improvement see speed tips below.
+
+vsint calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+input parameters
+
+x       real array containing sequence to be transformed
+
+n       the length of the sequences to be transformed.  
+        n+1 must be even and contain only prime factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array with dimension at least int(1.5*n+15)
+        in the program that calls vsint. the wsave array must be
+        initialized by calling subroutine vsinti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+
+output parameters
+
+x       for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+            for i=1,...,n
+
+              x(jj+inc*(i-1))= the sum from k=1 to k=n
+
+                  2*x(jj+(k-1)*inc)*sin(k*i*pi/(n+1))
+
+            for i=n+1,n+2
+ 
+              x(jj+inc*(i-1)) undefined
+
+w       workspace of the same size as x above
+        the routine destroys the values of
+        w(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n+2
+
+             a call of sint followed by another call of
+             sint will multiply the sequences in x by 2*(n+1).
+             hence sint is the unnormalized inverse
+             of itself.
+
+******************************************************************
+
+subroutine vcosti(n,wsave,ifail)
+
+******************************************************************
+
+subroutine vcosti initializes the array wsave which is used in
+subroutine vcost. the prime factorization of n together with
+a tabulation of the trigonometric functions are computed and
+stored in wsave.
+
+vcosti calls routines in the file vrffti.f which must be 
+included for compilation.
+
+input parameters
+
+n       the length of the sequence to be transformed.  the method
+        n-1 must be even and can only contain factors 2,3,5
+
+ifail   see error handling below
+
+output parameters
+
+wsave   a work array which must be dimensioned at least 2*n+15.
+        different wsave arrays are required for different values
+        of n. the contents of wsave must not be changed between
+        calls of vcost.
+
+ifail   see error handling below
+
+******************************************************************
+
+subroutine vcost (x,w,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vcost computes the discrete fourier cosine transform
+of even sequences. the transform is defined below at output
+parameter x.
+
+vcost calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+vcost is the unnormalized inverse of itself since a call of vcost
+followed by another call of vcost will multiply the input sequences
+in x by 2*(n-1). the transform is defined below at output parameter x
+
+the array wsave which is used by subroutine vcost must be
+initialized by calling subroutine vcosti(n,wsave,ifail).
+
+for description of use of n,m,inc,jmp see application tips below,
+for performance improvement see speed tips below
+
+input parameters
+
+x       real array containing sequence to be transformed
+
+n       the length of the sequence x. n must be greater than 1.
+        n-1 must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vcost. the wsave array must be
+        initialized by calling subroutine vcosti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+x       for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+            for i=1,...,n
+
+              x(jj+inc*(i-1)) = x(jj)+(-1)**(i-1)*x(jj+inc*(n-1))
+  
+               + the sum from k=2 to k=n-1
+
+                   2*x(jj+(k-1)*inc)*cos((k-1)*(i-1)*pi/(n-1))
+
+
+w       workspace of the same size as x above
+        the routine destroys the values of
+        w(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n
+
+             a call of vcost followed by another call of
+             vcost will multiply the sequence x by 2*(n-1)
+             hence vcost is the unnormalized inverse
+             of itself.
+
+
+
+******************************************************************
+
+subroutine vchbf (x,w,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vchbf computes the chebyshev transform
+of a real sequence. the transform is defined below at output
+parameter x.
+
+vchbf is unnormalized since a call of vchbf followed by a call
+to vchbb will multiply the input sequences in x by (n-1)/2.
+the transform is defined below at output parameter x
+
+the array wsave which is used by subroutine vchbf must be
+initialized by calling subroutine vcosti(n,wsave,ifail).
+
+for description of use of n,m,inc,jmp see application tips below,.
+for performance improvement see speed tips below
+
+vchbf calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+input parameters
+
+x       real array containing sequence to be transformed
+
+n       the length of the sequence x. n must be greater than 1.
+        n-1 must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vchbf. the wsave array must be
+        initialized by calling subroutine vcosti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+x       for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+          for i=1,...,n
+
+               x(jj+inc*(i-1)) = the sum from k=1 to k=n
+
+                 c(k)*c(i)*x(jj+(k-1)*inc)*cos((k-1)*(i-1)*pi/(n-1))
+
+where c(1)=c(n)=0.5, c(i)=1; i=2,...,n-1
+
+w       workspace of the same size as x above
+        the routine destroys the values of
+        w(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n
+
+             a call of vchbf followed by a  call of
+             vchbb will multiply the sequence x by (n-1)/2
+
+******************************************************************
+
+subroutine vchbb (x,w,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vchbb computes the inverse chebyshev transform
+of sequences of chebyshev coefficients.
+
+the transform is defined below at output parameter x.
+the array wsave which is used by subroutine vchbb must be
+initialized by calling subroutine vcosti(n,wsave,ifail).
+
+for description of use of n,m,inc,jmp see application tips below,.
+for performance improvement see speed tips below
+
+vchbb calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+input parameters
+
+x       real array containing sequence to be transformed
+
+n       the length of the sequence x. n must be greater than 1.
+        n-1 must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vchbf. the wsave array must be
+        initialized by calling subroutine vcosti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+x       for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+
+            for i=1,...,n
+
+              x(jj+inc*(i-1)) = the sum from k=1 to k=n
+
+                 x(jj+(k-1)*inc)*cos((k-1)*(i-1)*pi/(n-1))
+
+
+w       workspace of the same size as x above
+        the routine destroys the values of
+        w(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n
+
+             a call of vchbf followed by a  call of
+             vchbb will multiply the sequence x by (n-1)/2
+
+
+
+******************************************************************
+
+subroutine vcffti (n,wsave,ifail)
+
+******************************************************************
+
+subroutine vcffti initializes the array wsave which is used in
+both vcfftf and vcfftb. the prime factorization of n together with
+a tabulation of the trigonometric functions are computed and
+stored in wsave.
+
+n       the length of the sequence to be transformed
+
+output parameter
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        the same work array can be used for both vcfftf and vcfftb
+        as long as n remains unchanged. different wsave arrays
+        are required for different values of n. the contents of
+        wsave must not be changed between calls of vcfftf or vcfftb.
+
+ifail   see error handling below
+
+******************************************************************
+
+subroutine vcfftf (cr,ci,wr,wi,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vcfftf computes the forward complex discrete fourier
+transform (the fourier analysis). equivalently , vcfftf computes
+the fourier coefficients complex periodic sequences.
+the transform is defined below at output parameters cr,ci.
+
+the transform is not normalized. to obtain a normalized transform
+the output must be divided by n. otherwise a call of vcfftf
+followed by a call of vcfftb will multiply the sequence by n.
+
+the array wsave which is used by subroutine vcfftf must be
+initialized by calling subroutine vcffti(n,wsave,ifail).
+
+
+input parameters
+
+cr,ci   real arrays containing the real and imaginary parts of the
+        complex sequence to be transformed
+
+n       the length of the sequence cr,ci
+        n can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform
+        direction in either cr or ci
+
+jmp     the distance between the same element in two independent
+        sequences in either cr or ci
+
+wsave   a real work array which must be dimensioned at least 2*n+15
+        in the program that calls vcfftf. the wsave array must be
+        initialized by calling subroutine vcffti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+        the same wsave array can be used by vcfftf and vcfftb.
+
+output parameters
+
+cr,ci   for j=1,...,m
+     
+        let jj = 1+(j-1)*jmp  (start of jth sequence)
+
+        for i=1,...,n
+
+           cr(jj+inc*(i-1))=the sum from k=1,...,n of
+
+                 cr(jj+inc*(k-1))*cos((i-1)*(k-1)*2*pi/n)+
+                 ci(jj+inc*(k-1))*sin((i-1)*(k-1)*2*pi/n)
+
+           ci(jj+inc*(i-1))=the sum from k=1,...,n of
+
+                 -cr(jj+inc*(k-1))*sin((i-1)*(k-1)*2*pi/n)+
+                 ci(jj+inc*(k-1))*cos((i-1)*(k-1)*2*pi/n)
+                  
+wr,wi   workspaces of the same size as cr,ci above
+        the routine destroys the values of
+        wr(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n, j = 1,...,m
+        wi(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n, j = 1,...,m
+
+******************************************************************
+
+subroutine vcfftb (cr,ci,wr,wi,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vcfftb computes the forward backward discrete fourier
+transform (the fourier synthesis).
+the transform is defined below at output parameters cr,ci.
+a call of vcfftf followed by a call of vcfftb will multiply the
+sequence by n.
+the array wsave which is used by subroutine vcfftb must be
+initialized by calling subroutine vcffti(n,wsave,ifail).
+
+
+input parameters
+
+cr,ci   real arrays containing the real and imaginary parts of the
+        spectrum
+
+n       the length of the sequence cr,ci
+        n can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform
+        direction in either cr or ci
+
+jmp     the distance between the same element in two independent
+        sequences in either cr or ci
+
+wsave   a real work array which must be dimensioned at least 2*n+15
+        in the program that calls vcfftb. the wsave array must be
+        initialized by calling subroutine vcffti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+        the same wsave array can be used by vcfftb and vcfftf.
+
+output parameters
+
+cr,ci   for j=1,...,m
+     
+        let jj = 1+(j-1)*jmp  (start of jth sequence)
+
+        for i=1,...,n
+
+           cr(jj+inc*(i-1))=the sum from k=1,...,n of
+
+                 cr(jj+inc*(k-1))*cos((i-1)*(k-1)*2*pi/n)-
+                 ci(jj+inc*(k-1))*sin((i-1)*(k-1)*2*pi/n)
+
+           ci(jj+inc*(i-1))=the sum from k=1,...,n of
+
+                 -cr(jj+inc*(k-1))*sin((i-1)*(k-1)*2*pi/n)+
+                 ci(jj+inc*(k-1))*cos((i-1)*(k-1)*2*pi/n)
+                  
+wr,wi   workspaces of the same size as cr,ci above
+        the routine destroys the values of
+        wr(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n, j = 1,...,m
+        wi(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n, j = 1,...,m
+
+******************************************************************
+
+subroutine vcffts (cr,ci,w,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vcffts computes the discrete fourier transform
+of even complex sequences. the transform is defined below at output
+parameter cr,ci.  applied as is it computes the backward transform
+(fourier synthesis) but since it is an unnormalized inverse of itself
+it also computes the forward transform (fourier analysis) if
+normalized correctly.
+
+vcffts is defined so that it gives the same result as vcfftf
+or vcfftb applied to the full symmetric sequence.
+i.e send a sequence of length nfull with the symmetry property
+c(k)=c(nfull-k) to vcfftf or vcfftb; the result is a(1),...,a(nfull).
+then send c(1),...,c(nfull/2+1) to vcffts with n=nfull/2+1; 
+the result is then a(1),...,a(nfull/2+1).
+the roundoff error is different and slightly larger for vcffts.
+
+vcffts is the unnormalized inverse of itself since a call of vcffts
+followed by another call of vcffts will multiply the input sequences
+in x by 2*(n-1).
+
+the array wsave which is used by subroutine vcffts must be
+initialized by calling subroutine vcosti(n,wsave,ifail).
+
+!!! observe !!! only one workspace w is required for vcffts
+
+for description of use of n,m,inc,jmp see application tips below,
+for performance improvement see speed tips below
+
+vcffts calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+input parameters
+
+cr,ci   real arrays containing sequences to be transformed
+
+n       the length of the sequences x. n must be greater than 1.
+        n-1 must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vcffts. the wsave array must be
+        initialized by calling subroutine vcosti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+cr,ci     for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+            for i=1,...,n
+
+              cr(jj+inc*(i-1)) = cr(jj)+(-1)**(i-1)*cr(jj+inc*(n-1))
+  
+               + the sum from k=2 to k=n-1
+
+                   2*cr(jj+(k-1)*inc)*cos((k-1)*(i-1)*pi/(n-1))
+
+              cr(jj+inc*n) undefined
+
+              ci(jj+inc*(i-1)) = ci(jj)+(-1)**(i-1)*ci(jj+inc*(n-1))
+  
+               + the sum from k=2 to k=n-1
+
+                   2*ci(jj+(k-1)*inc)*cos((k-1)*(i-1)*pi/(n-1))
+
+
+w       workspace of the same size as cr above
+        the routine destroys the values of
+        w(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n
+
+             a call of vcffts followed by another call of
+             vcost will multiply the sequence x by 2*(n-1)
+             hence vcffts is the unnormalized inverse
+             of itself.
+
+******************************************************************
+
+subroutine vcftaf(cr,ci,wr,wi,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vcftaf computes the forward discrete fourier transform
+(fourier analysis) of odd complex sequences. the transform is defined 
+below at output parameter cr,ci.
+
+vcftaf is defined so that it gives the same result as vcfftf
+applied to the full antisymmetric sequence.
+i.e send a sequence of length nfull with the symmetry property
+c(k)=-c(nfull-k) to vcfftf; the result is a(1),...,a(nfull).
+then send c(2),...,c(nfull/2) to vcftaf with n=nfull/2-1; 
+the result is then a(2),...,a(nfull/2).
+since the full sequence is antisymmetric c(1)=c(nfull/2+1)=0
+and a(1)=a(nfull/2+1) . these need not be defined and should 
+not be sent to vcftaf.
+the roundoff error is different and slightly larger for vcftaf.
+
+vcftaf is unnormalized since a call to vcftaf followed by
+a call to vcftab will multiply the input sequences in x by 2*(n-1).
+to get a normalized transform the result must divided by 2*(n-1)
+
+the array wsave which is used by subroutine vcftaf must be
+initialized by calling subroutine vsinti(n,wsave,ifail).
+
+for description of use of n,m,inc,jmp see application tips below,
+for performance improvement see speed tips below
+
+vcftaf calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+input parameters
+
+cr,ci   real arrays containing sequences to be transformed
+
+n       the length of the sequences x.
+        n+1 must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vcftaf. the wsave array must be
+        initialized by calling subroutine vsinti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+cr,ci     for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+            for i=1,...,n
+
+              cr(jj+inc*(i-1))= the sum from k=1 to k=n
+
+                  2*ci(jj+(k-1)*inc)*sin(k*i*pi/(n+1))
+
+              ci(jj+inc*(i-1))= the sum from k=1 to k=n
+
+                  -2*cr(jj+(k-1)*inc)*sin(k*i*pi/(n+1))
+
+            for i=n+1,...,n+2
+ 
+              cr(jj+inc*(i-1)) undefined
+
+              ci(jj+inc*(i-1)) undefined
+
+wr,wi       workspace of the same size as cr,ci above
+            the routine destroys the values of
+            wr(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n+2
+            wi(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n+2
+
+******************************************************************
+
+subroutine vcftab(cr,ci,wr,wi,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vcftab computes the backward discrete fourier transform
+(fourier synthesis) of odd complex sequences. the transform is defined
+below at output parameter cr,ci.
+
+vcftab is defined so that it gives the same result as vcfftb
+applied to the full antisymmetric sequence.
+i.e send a sequence of length nfull with the symmetry property
+c(k)=-c(nfull-k) to vcfftb; the result is a(1),...,a(nfull).
+then send c(2),...,c(nfull/2) to vcftab with n=nfull/2-1; 
+the result is then a(2),...,a(nfull/2).
+since the full sequence is antisymmetric c(1)=c(nfull/2+1)=0
+and a(1)=a(nfull/2+1) . these need not be defined and should 
+not be sent to vcftab.
+the roundoff error is different and slightly larger for vcftab.
+
+a call to vcftaf followed by a call to vcftab will multiply
+the sequences by 2*(n+1)
+
+the array wsave which is used by subroutine vcftaf must be
+initialized by calling subroutine vsinti(n,wsave,ifail).
+
+for description of use of n,m,inc,jmp see application tips below,
+for performance improvement see speed tips below
+
+vcftab calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+input parameters
+
+cr,ci   real arrays containing sequences to be transformed
+
+n       the length of the sequences x.
+        n+1 must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vcftab. the wsave array must be
+        initialized by calling subroutine vsinti(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+cr,ci     for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+            for i=1,...,n
+
+              cr(jj+inc*(i-1))= the sum from k=1 to k=n
+
+                  -2*ci(jj+(k-1)*inc)*sin(k*i*pi/(n+1))
+
+              ci(jj+inc*(i-1))= the sum from k=1 to k=n
+
+                  2*cr(jj+(k-1)*inc)*sin(k*i*pi/(n+1))
+
+            for i=n+1,...,n+2
+ 
+              cr(jj+inc*(i-1)) undefined
+
+              ci(jj+inc*(i-1)) undefined
+
+wr,wi       workspace of the same size as cr,ci above
+            the routine destroys the values of
+            wr(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n+2
+            wi(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n+2
+
+******************************************************************
+
+subroutine vcossi(n,wsave,ifail)
+
+******************************************************************
+
+subroutine vcossi initializes the array wsave which is used in
+subroutine vchsf and vchsb. the prime factorization of n together with
+a tabulation of the trigonometric functions are computed and
+stored in wsave.
+
+vcossi calls routines in the file vrffti.f which must be 
+included for compilation.
+
+input parameters
+
+n       the length of the sequence to be transformed.
+        n must be even and can only contain factors 2,3,5
+
+ifail   see error handling below
+
+output parameters
+
+wsave   a work array which must be dimensioned at least 2*n+15.
+        different wsave arrays are required for different values
+        of n. the contents of wsave must not be changed between
+        calls of vchsf and vchsb.
+
+ifail   see error handling below
+
+******************************************************************
+
+subroutine vchsf (x,w,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vchsf computes the chebyshev transform
+of a real sequence for STAGGERED grid. the transform is defined below
+at output parameter x.
+
+vchsf is unnormalized since a call of vchsf followed by a call
+to vchsb will multiply the input sequences in x by n/2.
+the transform is defined below at output parameter x
+
+the array wsave which is used by subroutine vchsf must be
+initialized by calling subroutine vcossi(n,wsave,ifail).
+
+for description of use of n,m,inc,jmp see application tips below,.
+for performance improvement see speed tips below
+
+vchsf calls routines in the file vrfftf.f which must be 
+included for compilation.
+
+input parameters
+
+x       real array containing sequence to be transformed(array size n+1)
+
+n       the length of the sequence x. n must be greater than 1.
+        n must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vchsf. the wsave array must be
+        initialized by calling subroutine vcossi(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+x       for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+          for i=1,...,n
+
+               x(jj+inc*(i-1)) = the sum from k=1 to k=n
+
+                 cc(i)*x(jj+(k-1)*inc)*cos((k-1/2)*(i-1)*pi/n)
+
+           for i=n+1
+ 
+              x(jj+inc*(i-1)) undefined
+
+where cc(1)=0.5, cc(i)=1; i=2,...,n
+
+w       workspace of the same size as x above
+        the routine destroys the values of
+        w(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n+1
+
+             a call of vchsf followed by a  call of
+             vchsb will multiply the sequence x by n/2
+
+ *****  note
+             this transform needs array size (n+1) for the length of the
+             sequence n. But last element is undefined at input and exit
+
+******************************************************************
+
+subroutine vchsb (x,w,n,m,inc,jmp,wsave)
+
+******************************************************************
+
+subroutine vchsb computes the inverse chebyshev transform
+of sequences of chebyshev coefficients for STAGGERED grid.
+the transform is defined below at output parameter x.
+the array wsave which is used by subroutine vchsb must be
+initialized by calling subroutine vcossi(n,wsave,ifail).
+
+for description of use of n,m,inc,jmp see application tips below,.
+for performance improvement see speed tips below
+
+vchsb calls routines in the file vrfftb.f which must be 
+included for compilation.
+
+input parameters
+
+x       real array containing sequence to be transformed(array size n+1)
+
+n       the length of the sequence x. n must be greater than 1.
+        n must be even and can only contain factors 2,3,5
+        n may change between calls so long as
+        different wsave arrays are provided
+
+m       the number of sequences to be transformed
+
+inc     the distance between two elements in the transform direction
+
+jmp     the distance between the same element in two independent
+        sequences
+
+wsave   a work array which must be dimensioned at least 2*n+15
+        in the program that calls vchsb. the wsave array must be
+        initialized by calling subroutine vcossi(n,wsave,ifail) and a
+        different wsave array must be used for each different
+        value of n. this initialization does not have to be
+        repeated so long as n remains unchanged thus subsequent
+        transforms can be obtained faster than the first.
+
+
+output parameters
+
+x       for j=1,...,m
+
+          let jj = 1+jmp*(j-1) (start of jth sequence)
+ 
+
+            for i=1,...,n
+
+              x(jj+inc*(i-1)) = the sum from k=1 to k=n
+
+                 x(jj+(k-1)*inc)*cos((k-1)*(i-1/2)*pi/n)
+
+           for i=n+1
+ 
+              x(jj+inc*(i-1)) undefined
+
+w       workspace of the same size as x above
+        the routine destroys the values of
+        w(1+inc*(i-1)+jmp*(j-1)) ; i = 1,...,n+1
+
+             a call of vchsf followed by a  call of
+             vchsb will multiply the sequence x by n/2
+
+ *****  note
+             this transform needs array size (n+1) for the length of the
+             sequence n. But last element is undefined at input and exit.
+
+
+*****************************************************
+
+      application tips
+
+*****************************************************
+
+the apparent complexity of the indexing is quite
+straightforward for normal use.
+the first index of the arrays is considered the
+row number, the second the column number.
+data is in fortran stored columnwise i.e.
+with the first index varying most rapidly.
+note that the number of elements in the transform
+direction is not always equal to n, and further that
+sometimes the transform requires a few extra elements
+as workspace.
+the required minimum lengths ml of the arrays for sequence length n
+is as follows :
+
+vrfftf, vrfftb ml = n/2+1
+vcost          ml = n
+vsint          ml = n+2
+vchbf,vchbb    ml = n
+vcfftf,vcfftb  ml = n
+vcffts         ml = n
+vcftaf,vcftab  ml = n+2
+vcossi         ml = n+1
+vchsf,vchsb    ml = n+1
+
+real transforms (cosine,sine,chebyshev) :
+=========================================
+
+consider the transform of r(1:p,1:q)
+
+______________________________________
+!                                     !
+!  r(1,1)    r(1,2)  ...  r(1,q)      !
+!                                     !
+!  r(2,1)                 r(2,q)      !
+!    .                      .   
+     .                      .
+!    .                      .         !
+!  r(p,1)    r(p,2)  ...  r(p,q)      !
+______________________________________
+
+
+rowwise transform :
+
+the first data sequence to be transformed is r(1,1),...,r(1,q) 
+and the distance inc between consecutive elements in
+this sequence is p because of the columnwise storage
+further the distance jmp between the same element in
+r(1,1),...,r(1,q) and the next sequence r(2,1),...,r(2,q)
+is 1.
+
+q  >= ml
+m   = p
+inc = p
+jmp = 1
+ex. call vcost(r,w,n,p,p,1,wsave)
+
+columnwise transform :
+
+first sequence to be transformed r(1,1),...,r(p,1)
+second r(1,2),...,r(p,2)
+
+p  >= ml
+m   = q
+inc = 1
+jmp = p
+ex. call vcost(r,w,n,q,1,p,wsave)
+
+complex transforms (including vrfftf,vrfftb)
+============================================
+
+first one has to consider the storage of the complex
+numbers : in standard fortran storage the real and imaginary
+parts are stored consecutively with the real part first.
+on some computers this is not the most efficient, see speed tips
+below, and two other types of storage might be used :
+separate storage in two arrays or alternating column storage,
+where the complex numbers are stored rowwise
+
+standard fortran storage
+======================
+consider the transform of complex array c(1:p,1:q)
+workspace complex array w(1:p,1:q)
+
+______________________________________
+!                                     !
+!  cr(1,1)    cr(1,2)   ...  cr(1,q)  !
+!                                     !
+!  ci(1,1)                   ci(1,q)  !
+!                                     !
+!  cr(2,1)                   cr(2,q)  !
+!                                     !
+!  ci(2,1)                   ci(2,q)  !
+!    .                        .   
+     .                        .
+!    .                        .       !
+!  ci(p,1)    ci(p,2)   ...  ci(p,q)  !
+______________________________________
+
+since the address of the real and imaginary parts are not available
+separately we will have to get them by means of equivalence :
+
+
+real r(1:2*p,1:q),wr(1:2*p,1:q)
+equivalence (c,r),(w,wr)
+
+send as calling arguments :
+cr : r
+ci : r(2,1)
+
+rowwise transform :
+ 
+first sequence cr(1,1),ci(1,1),...,ci(1,q)
+second sequence cr(1,2),ci(1,2),...,ci(2,q)
+distance within each sequence inc e.g. between cr(1,1)
+and cr(2,1) is 2*p
+distance between the same element in two sequences jmp
+e.g between cr(1,1) and cr(1,2) is 2
+
+q  >= ml
+m   = p
+inc = 2*p
+jmp = 2
+ex. call vcfftf(r,r(2,1),wr,wr(2,1),n,p,2*p,2,wsave)
+
+columnwise transform :
+first sequence cr(1,1),ci(1,1),...,ci(p,1)
+second sequence cr(1,2),ci(1,2),...,ci(p,2)
+p  >= ml
+m   = q
+inc = 2
+jmp = 2*p
+ex. call vcfftf(r,r(2,1),wr,wr(2,1),n,q,2,2*p,wsave)
+
+
+alternating storage
+===================
+
+____________________________________________________________
+!                                                          !
+!  cr(1,1)    ci(1,1)   cr(1,2)    ci(1,2)   ...  ci(1,q)  !
+!                                                          !
+!  cr(2,1)    ci(2,1)                                      !
+     .          .                                  .   
+     .          .                                  .
+!    .          .                                  .       !
+!  cr(p,1)    ci(p,1)   ...                       ci(p,q)  !
+____________________________________________________________
+
+the data is contained in the real array r(1:p,1:2*q)
+workspace r(1:p,1:2*q)
+
+send as calling arguments :
+cr : r
+ci : r(1,2)
+
+rowwise transform :
+
+first sequence cr(1,1),ci(1,1),...,ci(1,q)
+second sequence cr(1,2),ci(1,2),...,ci(2,q)
+distance within each sequence inc e.g. between cr(1,1)
+and cr(2,1) is 2*p
+distance between the same element in two sequences jmp
+e.g between cr(1,1) and cr(1,2) is 1
+
+q  >= ml
+m   = p
+inc = 2*p
+jmp = 1
+ex. call vcfftf(r,r(1,2),wr,wr(1,2),n,p,2*p,1,wsave)
+
+columnwise transform :
+first sequence cr(1,1),ci(1,1),...,ci(p,1)
+second sequence cr(1,2),ci(1,2),...,ci(p,2)
+p  >= ml
+m   = q
+inc = 1
+jmp = 2*p
+ex. call vcfftf(r,r(1,2),wr,wr(1,2),n,q,1,2*p,wsave)
+
+
+separate storage
+================
+_______________________________________
+!                                     !
+!  cr(1,1)    cr(1,2)   ...  cr(1,q)  !
+!                                     !
+!  cr(2,1)      .       ...  cr(2,q)  !
+     .          .              .
+     .          .              .
+     .          .              .
+!  cr(p,1)    cr(p,2)   ...  cr(p,q)  !
+_______________________________________
+
+_______________________________________
+!                                     !
+!  ci(1,1)    ci(1,2)   ...  ci(1,q)  !
+!                                     !
+!  ci(2,1)      .       ...  ci(2,q)  !
+     .          .              .
+     .          .              .
+     .          .              .
+!  ci(p,1)    ci(p,2)   ...  ci(p,q)  !
+_______________________________________
+
+the data is contained in the real arrays cr(1:p,1:q), ci(1:p,1:q)
+workspace wr(1:p,1:q),wi(1:p,1:q)
+cr,ci are sent directly as calling arguments
+
+rowwise transform :
+
+first sequence cr(1,1),ci(1,1),...,ci(1,q)
+second sequence cr(1,2),ci(1,2),...,ci(2,q)
+distance within each sequence inc e.g. between cr(1,1)
+and cr(2,1) is p
+distance between the same element in two sequences jmp
+e.g between cr(1,1) and cr(1,2) is 1
+
+q  >= ml
+m   = p
+inc = p
+jmp = 1
+ex. call vcfftf(cr,ci,wr,wi,n,p,p,1,wsave)
+
+columnwise transform :
+first sequence cr(1,1),ci(1,1),...,ci(p,1)
+second sequence cr(1,2),ci(1,2),...,ci(p,2)
+p  >= ml
+m   = q
+inc = 1
+jmp = p
+ex. call vcfftf(cr,ci,wr,wi,n,q,1,p,wsave)
+
+
+
+*****************************************************
+
+      error handling
+
+*****************************************************
+
+
+
+as not all lengths of sequences can be handled
+by the routines the initialization routines are equipped
+with an error handling similar to nag.
+
+hard error handling is enabled by setting ifail = 0.
+if the transform length is not factorable the routine
+stops and prints an error message on standard output.
+note that for hard error handling a constant 0 can be
+inserted for the ifail parameter.
+
+soft error handling operates if the ifail parameter
+is set nonzero. this means that the routine returns
+normally even in the case of failure.
+the return value of ifail is interpreted
+as follows :
+0  successful return
+1  the length does not fulfill the required
+   evenness i.e. even for real transforms, odd for sine,
+   cosine, chebyshev, symmetric and antisymmetric transforms.
+>1 a factor = ifail was found that could not be handled.
+
+
+*****************************************************
+
+      speed tips
+
+*****************************************************
+
+The transform routines are made to be as efficient as possible, except
+for the initialization routines.  however, to get the best efficiency
+on high speed computers the data structures have to be set up to avoid
+certain bottlenecks.
+
+The primary concern to get high efficiency on a vector machine is to
+get the routines to vectorize. All of the transform routines above
+vectorize by putting a loop over the same element in each independent
+sequence as the innermost one.  Consequently the vector length is m
+and the vector stride is jmp.
+
+To get good efficiency m should be as big as possible except on some
+machines equipped with cache where it might be better to split up
+transforms in chunks that can fit in the cache.  The minimum vector
+length to get good performance (above 90% of that for infinite vector
+lengths) is typically close to the length of the vector registers. (32
+on alliant fx80, 64 on cray xmp,ymp, 2).  On computers equipped with
+direct memory vectors (eta10/cyber) the lengths should be a couple of
+hundred to get good performance.
+
+The vector stride jmp matters only on computers with interleaved
+memory access.  on cray-xmp's stride should not be a multiple of 8 as
+this leads to bank-conflicts.  On cray-2's stride should not be
+multiple of 2, which is a very stringent requirement, since it means
+complex data cannot be stored in the standard fortran way, c.f.
+application tips above.  On alliant fx-80 the authors has been unable
+to find any problems with even strides but too large strides on cached
+machines might mean that the vector doesn't fit in the cache.
+
+To avoid even strides when doing columnwise transforms on a matrix
+with an even number of rows padding can be used. This means that the
+number of rows is increased by one.
+
+Note that stride can be a substantial problem especially on cray-2's
+where a stride of 2 lowers performance around a factor 2, and a stride
+of 128 can mean 30 times slower execution.
+
+The length of the sequences to be transformed is often set by the
+application, but if the fastest transform near a certain length is
+wanted it should be noted that factors of 4 are the most efficient.
+I.e. that n=256 is noticeably faster than 250. However, a few non-4
+factors do not cost more than 10-30% in execution times, so that it is
+seldom useful to take a longer transform, for example 128 instead of
+100.
+

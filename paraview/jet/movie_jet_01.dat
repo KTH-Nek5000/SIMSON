@@ -1,0 +1,30 @@
+# Simson ParaView movie file version
+1.0
+# Title
+Jet r1.5
+# Input field data directory
+./
+# Scene files
+scene_640_480_oct6.dat
+# Single frame file (this is where ParaView commands are used)
+single_frame.py
+# Trajectory and global movie output parameter filenames
+traj_00.dat glob_00.dat
+# Picture name
+r1_5_600_288
+# Parallel Projection [0 = perspective, 1 = parallel]
+0
+# Down sample [sx sy sz]
+1 1 1
+# Cut off [xmin xmax ymin ymax zmin zmax]
+0 816 0 181 0 287
+# Background color [RGB]
+0 0 0
+# View size [xdim ydim]
+600 288
+# Background mesh(es) [filenames or "none" if not used]
+none
+# Mesh color [RGB]
+255 255 255
+# Start image number
+0

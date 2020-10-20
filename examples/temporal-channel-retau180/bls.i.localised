@@ -1,0 +1,25 @@
+init.u
+4200.         Re based on channel half width h and U_cl laminar
+12.56637061   xl in h
+2.            2h in h (fixed)
+6.283185307   zl in h
+fsc.dat
+1             Flow type (Temporal Poiseuille) (fltype)
+.false.       Perturbation mode (pert)
+0.0           Tilting angle
+0.0           Shift velocity of box (ushift)
+.true.        Localized perturbation (locdi)
+4             disturbance type (ditype)
+0.1           Amplitude (amp)
+0.01          Rotation in horizontal direction (theta)
+1.            (xscale)
+0.            (xloc0)
+1.0           (yscale)
+1.            (zscale)
+3             (ipoly)
+.false.       Gaussian perturbation (gaussian)
+.false.       Waves (waves)
+.false.       OS modes (os)
+.false.       Spectral modes (specm)
+.false.       Perturbations from file (pertfromfile)
+.false.       Noise (noise)

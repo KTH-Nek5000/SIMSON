@@ -1,0 +1,30 @@
+# Simson ParaView movie file version
+1.0
+# Title
+Hairpin LES
+# Input field data directory
+/scratch/mattias/Hairpin/Data-DNS/
+# Scene files scene_hairpin_stationary_dns.dat
+scene_hairpin_stationary_dns_02.dat scene_hairpin_stationary_dns_03.dat scene_hairpin_stationary_dns_04.dat scene_hairpin_stationary_dns_05.dat
+# Single frame file (this is where ParaView commands are used)
+single_frame_hairpin_contour_dns.py
+# Trajectory and global movie output parameter filenames
+traj_stationary.dat glob_stationary.dat
+# Picture name
+frame_hairpin_stationary
+# Parallel Projection [0 = perspective, 1 = parallel]
+0
+# Down sample [sx sy sz]
+1 1 1
+# Cut off [xmin xmax ymin ymax zmin zmax]
+0 7000 0 1023 0 256
+# Background color [RGB]
+0 0 0
+# View size [xdim ydim]
+1024 768
+# Background mesh(es) [filenames or "none" if not used] grid-xz-hairpin.vtk grid-xy-hairpin.vtk
+grid-xz-hairpin-dns2.vtk grid-xy-hairpin-dns2.vtk
+# Mesh color [RGB]
+0 80 0
+# Start image number
+0

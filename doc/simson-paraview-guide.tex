@@ -1,0 +1,161 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%$HeadURL$
+%$LastChangedDate$
+%$LastChangedBy$
+%$LastChangedRevision$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% To compile this document do the following:
+%
+%   pdflatex simson-svn-guide
+%   bibtex simson-svn-guide
+%   pdflatex simson-svn-guide
+%   pdflatex simson-svn-guide
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt,a4paper]{simson}
+\usepackage[swedish,english]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage[latin1]{inputenc}
+\usepackage[colorlinks=true, pdfstartview=FitV, linkcolor=blue, citecolor=blue, urlcolor=blue, pdfkeywords={DNS, Simson, subversion, svn}, pdfauthor={}, pdftitle={User Guide. Produced from $Rev$}]{hyperref}
+
+% Set graphics path
+\graphicspath{{./figures/}}
+
+\title{\textbf{SIMSON}\\ParaView Guide\\ $Rev$}
+
+\author{}
+
+\kthno{}
+\kthcoverpicture{figures/freestream_front}
+\kthinnerbackone{The front page image is a visualization of laminar-turbulent transition induced by ambient free-stream turbulence convected above a flat plate, \emph{i.e.}\ so-called bypass transition \citep{Brandt-Schlatter-Henningson:2004}. The large-eddy simulation used to generate the image \citep{schlatter_brandt_henningson_abstract_2006} is performed with \esoft{Simson} using the ADM-RT subgrid-scale model \citep{schlatter_stolz_kleiser_2004}, further postprocessed using the program \esoft{lambda2} and rendered using \esoft{OpenDX}. Low and high speed streaks are visualized with blue and red isocontours, respectively; green and yellow isocontours indicate the $\lambda_2$ vortex identification criterion \citep{jeong_hussain_1995}. The flow is from lower left to upper right.}
+\kthinnerbacktwo{This user guide is compiled from $Rev$.}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents*
+
+
+% ####################################################################
+\chapter{Introduction}
+% ####################################################################
+\setcounter{page}{1}\pagenumbering{arabic} To interpret the large
+amount of data that can be generated from time dependent, highly
+resolved, computer simulation of different flow configurations
+visualization is a very important tool. To aid animated visualization
+a set python scripts have been created that makes use of VTK \cite{}
+and ParaView Open Source projects to generate a sequence of frames
+that can be combined into a movie.
+
+
+% ####################################################################
+\chapter{Getting started}
+% ####################################################################
+In order to use ParaView and VTK the output files from Simson have to
+be converted to \efile{.vtk} format. This can be done with the tool
+\esoft{lambda2}. This tool also have support to reduce the amount of
+data necessary to focus only on the particular part one is interest
+in. Once the \efile{.vtk} files have been generated two parameter
+files have to be created, one movie*.dat and at least one scene*.dat
+file. The movie file defines the global parameters for the movie to be
+generated. The movie file then refers to one or more scene files that
+define the trajectory and what data that should be loaded.
+
+Once these files have been generated the driver tool is run which
+first generates a trajectory file based on the scene files. Once it is
+generated it is analyzed so that the driver script knows when it has
+to reload data. This is in order to optimize the call to the single
+frame script that does the actual image rendering. There is an outer
+loop in the sdriver script that iterates over all chunks of the
+trajectory file where data is changed. The inner loop in the single
+frame script steps through all of trajectory items in a single chunk.
+
+
+% ====================================================================
+\section{The movie.dat file}
+% ====================================================================
+To configure an animation at least two parameter files are required:
+1. The main parameter file holds global parameters for input and
+output purposes.
+2. Each animation is built up out of scenes where each scene
+is controlled through a parameter file that controls what datasets
+should be loaded as well as camera movements.
+
+The movie.dat file holds all the global parameters for the movie
+generation. After it has been analyzed a stripped down parameter file
+that is read by the single\_frame file is generated.
+
+\begin{table}
+\begin{verbatim}
+# Simson ParaView movie file version
+1.0
+# Title
+Hairpin LES
+# Input field data directory
+/scratch/mattias/Hairpin/Data-non-uniform-grid/
+# Scene files
+scene_hairpin_transient_01.dat scene_hairpin_transient_02.dat
+# Single frame file
+single_frame_hairpin_contour.py
+# Trajectory and global movie output parameter filenames
+traj_transient.dat glob_transient.dat
+# Picture name
+frame_hairpin_transient
+# Parallel Projection [0 = perspective, 1 = parallel]
+0
+# Down sample [sx sy sz]
+1 1 1
+# Cut off [xmin xmax ymin ymax zmin zmax]
+0 7000 0 185 0 383
+# Background color [RGB]
+0 0 0
+# View size [xdim ydim]
+1024 768
+# Background mesh(es) [filenames or "none" if not used]
+grid-xz-hairpin.vtk grid-xy-hairpin.vtk
+# Mesh color [RGB]
+0 30 0
+# Start image number
+0
+\end{verbatim}
+\caption{The movie parameter file...}
+\end{table}
+
+
+% --------------------------------------------------------------------
+\subsection{The scene.dat file}
+% --------------------------------------------------------------------
+
+\begin{verbatim}
+
+\end{verbatim}
+
+% ====================================================================
+\section{...}
+% ====================================================================
+
+% --------------------------------------------------------------------
+\subsection{...}
+% --------------------------------------------------------------------
+
+
+% --------------------------------------------------------------------
+\subsection{...}
+% --------------------------------------------------------------------
+
+
+% ####################################################################
+\chapter{Examples}
+% ####################################################################
+
+\newpage
+
+\bibliographystyle{simson}
+\bibliography{fluids}
+
+\end{document}

@@ -1,0 +1,13 @@
+Jet in crossflow simulation example
+
+Milos Ilak
+January 2011
+
+Steps:
+
+1) Compile fsc, bls and bla using the given par.f (make nproc=1 for bls and fsc)
+2) Run fsc using the given fsc.i file
+3) Run bls using the given bls.i file, and obtain init.u
+4) Run bla using the given bla.i file and the init.u file
+
+The simulation starts from a Blasius boundary layer with added random noise of small amplitude, and a jet is imposed on the lower wall. The asymmetric noise is added in order to make sure that all possible instabilities are excited. The resolution is low in spanwise and wall-normal direction for this example.

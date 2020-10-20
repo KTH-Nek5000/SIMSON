@@ -1,0 +1,19 @@
+init.u
+300.        Re based on delta star and U freestream
+2000.       xl in delta star
+60.         yl in delta star
+10.         zl in delta star
+fsc.dat
+6           Flow type (Spatial Blasius) (fltype)
+-135.       Base flow blending start (bstart)
+135.        Base flow blending length (bslope)
+.true.      Perturbation mode (pert)
+0.          Shift velocity of box (ushift)
+.false.     Localized disturbance (locdi)
+.false.     Gaussian perturbation (gaussian)
+.false.     Waves (waves)
+.false.     OS modes (os)
+.false.     Spectral modes (specm)
+.false.     Peturbations from file (pertfromfile)
+.false.     Noise (noise)
+

@@ -1,0 +1,399 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{fullpage}
+\begin{document}
+\title{Transport Equations for the Reynolds Stresses and Scalar Fluxes}
+\maketitle
+
+\noindent Convention:
+\begin{eqnarray*}
+f = \langle f \rangle_{z,t} + f' \nonumber
+\end{eqnarray*}
+Summation over repeated indices. All the equations are in non-dimensional form.
+
+
+\noindent $\ddag$ Note that each number under each term is the corresponding entry in the statistics list.
+
+\noindent $\bullet$ \textbf{Transport equations for $\frac{1}{2}u_i^2$, $\frac{1}{2}\langle u_i\rangle^2$, and $\frac{1}{2}\langle u_i'u_i'\rangle$}
+\begin{eqnarray}
+\frac{\partial u_i^2 /2}{\partial t}
++u_l\frac{\partial u_i^2/2 }{\partial x_l}
+&=&-u_i\frac{\partial p }{\partial x_i}
++\frac{1}{Re}(\frac{\partial^2 u_i^2 /2}{\partial x_l\partial x_l}-\frac{\partial u_i }{\partial x_l}\frac{\partial u_i }{\partial x_l}) \\
+(-125)\quad{} &&(-133) \quad{}  \quad{} (-128) \quad{} \quad{} (-136)\nonumber \\
+\frac{\partial \langle u_i\rangle^2 /2 }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u_i\rangle^2 /2 }{\partial x_l}
+&=&\langle u_i'u_l'\rangle \frac{\partial \langle u_i \rangle}{\partial x_l}
+-\frac{\partial \langle u_i'u_l'\rangle \langle u_i \rangle }{\partial x_l}% 
+-\langle u_i\rangle \frac{\partial \langle p\rangle }{\partial x_i}\nonumber \\
+(-126)\quad{} && (-89) \qquad{} \qquad{} (-131)  \quad{} \quad{} (-134)\nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle u_i\rangle^2 /2 }{\partial x_l\partial x_l}-\frac{\partial \langle u_i\rangle }{\partial x_l} \frac{\partial \langle u_i\rangle }{\partial x_l}) \\
+&&\quad{}(-129) \quad{} \qquad{} (-137) \nonumber \\
+\frac{\partial \langle u_i'^2\rangle/2 }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u_i'^2\rangle/2 }{\partial x_l}
+&=&-\langle u_i'u_l'\rangle \frac{\partial \langle u_i \rangle  }{\partial x_l}
+-\frac{1}{2}\frac{\partial \langle u_i'^2u_l'\rangle}{\partial x_l} 
+-\langle u_i' \frac{\partial  p' }{\partial x_i}\rangle \nonumber \\
+(-127)\quad{} &&\quad{} (-89) \qquad{} \quad{} (-132) \quad{} \quad{} (-135) \nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle u_i'^2 /2\rangle}{\partial x_l\partial x_l}-\langle \frac{\partial  u_i' }{\partial x_l}\frac{\partial  u_i' }{\partial x_l}\rangle) \\
+&&\quad{} (-130) \qquad{} \quad{}(-138) \nonumber 
+\end{eqnarray}
+where
+\begin{eqnarray*}
+\frac{1}{Re}(\frac{\partial^2 u_i^2/2 }{\partial x_j\partial x_j}-\frac{\partial u_i }{\partial x_j}\frac{\partial u_i }{\partial x_j})
+&=&\frac{1}{Re}(\frac{\partial 2u_iS_{ij} }{\partial x_j}-2S_{ij}S_{ij})\\
+ (-128) \qquad{} (-136)\quad{} &&\quad{} (-139) \quad{} \quad{}(-82) \nonumber \\
+\frac{1}{Re}(\frac{\partial^2 \langle u_i\rangle^2 /2}{\partial x_j\partial x_j}-\frac{\partial \langle u_i\rangle }{\partial x_j} \frac{\partial \langle u_i\rangle }{\partial x_j})
+&=&\frac{1}{Re}(\frac{\partial 2\langle u_i\rangle \langle S_{ij}\rangle }{\partial x_j}-2\langle S_{ij}\rangle \langle S_{ij}\rangle) \\
+ (-129) \qquad{} \quad{}(-137)\quad{}&&\quad{} (-140) \qquad{} \qquad{}(-83) \nonumber \\
+\frac{1}{Re}(\frac{\partial^2 \langle u_i'^2/2 \rangle}{\partial x_j\partial x_j}-\langle \frac{\partial  u_i' }{\partial x_j}\frac{\partial  u_i' }{\partial x_j}\rangle)
+&=&\frac{1}{Re}(\frac{\partial \langle 2u_i'S_{ij}'\rangle }{\partial x_j}-\langle 2S_{ij}'S_{ij}'\rangle) \\
+\quad{} (-130) \qquad{} \quad{}(-138)\quad{}&&\quad{} (-141) \quad{} \qquad{}(-84) \nonumber 
+\end{eqnarray*}
+and 
+\begin{eqnarray*}
+S_{ij}=\frac{1}{2}(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}) \nonumber
+\end{eqnarray*}
+
+
+
+\noindent $\bullet$  \textbf{Transport equations for $u_iu_j$, $\langle u_iu_j\rangle$, and $\langle u_i'u_j'\rangle$}
+\begin{eqnarray}
+\frac{\partial u_iu_j }{\partial t}
++u_l\frac{\partial u_iu_j }{\partial x_l}
+&=&-(u_i\frac{\partial p }{\partial x_j}+u_j\frac{\partial p }{\partial x_i})
++\frac{1}{Re}(\frac{\partial^2 u_iu_j }{\partial x_l\partial x_l}-2\frac{\partial u_i }{\partial x_l}\frac{\partial u_i }{\partial x_l}) \\
+\frac{\partial \langle u_i\rangle \langle u_j\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u_i\rangle \langle u_j\rangle }{\partial x_l}
+&=&\langle u_j'u_l'\rangle \frac{\partial \langle u_i \rangle}{\partial x_l}+\langle u_i'u_l'\rangle \frac{\partial \langle u_j \rangle  }{\partial x_l}
+-(\frac{\partial \langle u_j'u_l'\rangle \langle u_i \rangle }{\partial x_l}+\frac{\partial \langle u_i'u_l'\rangle \langle u_j \rangle }{\partial x_l}) \nonumber \\
+&-&(\langle u_i\rangle \frac{\partial \langle p\rangle }{\partial x_j}+\langle u_j \rangle \frac{\partial \langle p\rangle }{\partial x_i}) 
++ \frac{1}{Re}(\frac{\partial^2 \langle u_i\rangle \langle u_j \rangle}{\partial x_l\partial x_l}-2\frac{\partial \langle u_i\rangle }{\partial x_l} \frac{\partial \langle u_j\rangle }{\partial x_l}) \\
+\frac{\partial \langle u_i'u_j'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u_i'u_j'\rangle }{\partial x_l}
+&=&-(\langle u_j'u_l'\rangle \frac{\partial \langle u_i \rangle  }{\partial x_l}
++\langle u_i'u_l'\rangle \frac{\partial \langle u_j \rangle  }{\partial x_l})
+-\frac{\partial \langle u_i'u_j'u_l'\rangle}{\partial x_l}  \nonumber \\
+&-&(\langle u_i' \frac{\partial  p' }{\partial x_j}\rangle +\langle u_j' \frac{\partial \ p' }{\partial x_i}\rangle) 
++\frac{1}{Re}(\frac{\partial^2 \langle u_i'u_j' \rangle}{\partial x_l\partial x_l}-2\langle \frac{\partial  u_i' }{\partial x_l}\frac{\partial  u_i' }{\partial x_l}\rangle)
+\end{eqnarray}
+
+
+\noindent $\bullet$  \textbf{Transport equations for $uu$, $\langle uu\rangle$, and $\langle u'u'\rangle$}
+\begin{eqnarray}
+\frac{\partial u^2 }{\partial t}
++u_l\frac{\partial u^2 }{\partial x_l}
+&=&-2u\frac{\partial p }{\partial x}
++\frac{1}{Re}(\frac{\partial^2 u^2 }{\partial x_l\partial x_l}-2\frac{\partial u }{\partial x_l}\frac{\partial u }{\partial x_l}) \\
+(-142) &&(-196) \quad{}  \quad{} (-160) \quad{} \quad{} (-247)\nonumber \\
+\frac{\partial \langle u\rangle \langle u\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u\rangle \langle u\rangle }{\partial x_l}
+&=&2\langle u'u_l'\rangle \frac{\partial \langle u \rangle}{\partial x_l}
+-2\frac{\partial \langle u'u_l'\rangle \langle u \rangle }{\partial x_l}
+-2\langle u\rangle \frac{\partial \langle p\rangle }{\partial x}\nonumber \\
+(-148) \quad{}&&\quad{} (-190) \quad{} \qquad{} (-178)  \quad{} \quad{} (-202)\nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle u\rangle \langle u \rangle}{\partial x_l\partial x_l}-2\frac{\partial \langle u\rangle }{\partial x_l} \frac{\partial \langle u\rangle }{\partial x_l}) \\
+&&\quad{}(-166) \quad{} \qquad{} (-253) \nonumber \\
+\frac{\partial \langle u'^2\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u'^2\rangle }{\partial x_l}
+&=&-2\langle u'u_l'\rangle \frac{\partial \langle u \rangle  }{\partial x_l}
+-\frac{\partial \langle u'^2u_l'\rangle}{\partial x_l} 
+-2\langle u' \frac{\partial  p' }{\partial x}\rangle \nonumber \\
+(-154)\quad{} &&\quad{}\quad{} (-190) \quad{} \quad{} (-184) \quad{} (-208) \nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle u'^2 \rangle}{\partial x_l\partial x_l}-2\langle \frac{\partial  u' }{\partial x_l}\frac{\partial  u' }{\partial x_l}\rangle) \\
+&&\quad{} (-172) \qquad{} \quad{}(-259) \nonumber
+\end{eqnarray}
+
+
+\noindent $\bullet$  \textbf{Transport equations for $vv$, $\langle vv\rangle$, and $\langle v'v'\rangle$}
+\begin{eqnarray}
+\frac{\partial v^2 }{\partial t}
++u_l\frac{\partial v^2 }{\partial x_l}
+&=&-2v\frac{\partial p }{\partial y}
++\frac{1}{Re}(\frac{\partial^2 v^2 }{\partial x_l\partial x_l}-2\frac{\partial v }{\partial x_l}\frac{\partial v }{\partial x_l}) \\
+(-143) &&(-197) \quad{}  \quad{} (-161) \quad{} \quad{} (-248)\nonumber \\
+\frac{\partial \langle v\rangle \langle v\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle v\rangle \langle v\rangle }{\partial x_l}
+&=&2\langle v'u_l'\rangle \frac{\partial \langle v \rangle}{\partial x_l}
+-2\frac{\partial \langle v'u_l'\rangle \langle v \rangle }{\partial x_l}
+-2\langle v\rangle \frac{\partial \langle p\rangle }{\partial y} \nonumber \\
+(-149) \quad{}&&\quad{} (-191) \quad{} \qquad{} (-179)  \quad{} \quad{} (-203)\nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle v\rangle \langle v \rangle}{\partial x_l\partial x_l}-2\frac{\partial \langle v\rangle }{\partial x_l} \frac{\partial \langle v\rangle }{\partial x_l}) \\
+&&\quad{}(-167) \quad{} \qquad{} (-254) \nonumber \\
+\frac{\partial \langle v'^2\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle v'^2\rangle }{\partial x_l}
+&=&-2\langle v'u_l'\rangle \frac{\partial \langle v \rangle  }{\partial x_l}
+-\frac{\partial \langle v'^2u_l'\rangle}{\partial x_l}
+-2\langle v' \frac{\partial  p' }{\partial y}\rangle \nonumber \\
+(-155)\quad{} &&\quad{}\quad{} (-191) \quad{} \quad{} (-185)  \quad{} (-209) \nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle v'^2 \rangle}{\partial x_l\partial x_l}-2\langle \frac{\partial  v' }{\partial x_l}\frac{\partial  v' }{\partial x_l}\rangle) \\
+&&\quad{} (-173) \qquad{} \quad{}(-260) \nonumber
+\end{eqnarray}
+
+
+\noindent $\bullet$  \textbf{Transport equations for $ww$, $\langle ww\rangle$, and $\langle w'w'\rangle$}
+\begin{eqnarray}
+\frac{\partial w^2 }{\partial t}
++u_l\frac{\partial w^2 }{\partial x_l}
+&=&-2w\frac{\partial p }{\partial z}
++\frac{1}{Re}(\frac{\partial^2 w^2 }{\partial x_l\partial x_l}-2\frac{\partial w }{\partial x_l}\frac{\partial w }{\partial x_l}) \\
+(-144) &&(-198) \quad{}  \quad{} (-162) \quad{} \quad{} (-249)\nonumber \\
+\frac{\partial \langle w\rangle \langle w\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle w\rangle \langle w\rangle }{\partial x_l}
+&=&2\langle w'u_l'\rangle \frac{\partial \langle w \rangle}{\partial x_l}
+-2\frac{\partial \langle w'u_l'\rangle \langle w \rangle }{\partial x_l}
+-2\langle w\rangle \frac{\partial \langle p\rangle }{\partial z} \nonumber \\
+(-150) \quad{}&&\quad{} (-192) \quad{} \qquad{} (-180)  \quad{} \qquad{} (-204)\nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle w\rangle \langle w \rangle}{\partial x_l\partial x_l}-2\frac{\partial \langle w\rangle }{\partial x_l} \frac{\partial \langle w\rangle }{\partial x_l}) \\
+&&\quad{}(-168) \quad{} \qquad{} (-255) \nonumber \\
+\frac{\partial \langle w'^2\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle w'^2\rangle }{\partial x_l}
+&=&-2\langle w'u_l'\rangle \frac{\partial \langle w \rangle}{\partial x_l}
+-\frac{\partial \langle w'^2u_l'\rangle}{\partial x_l}-2\langle w' \frac{\partial  p'}{\partial z}\rangle \nonumber \\
+(-156)\quad{} &&\quad{}\quad{} (-192) \quad{} \quad{} (-186) \qquad{}  (-210) \nonumber \\
+&+&\frac{1}{Re}(\frac{\partial^2 \langle w'^2 \rangle}{\partial x_l\partial x_l}-2\langle \frac{\partial  w' }{\partial x_l}\frac{\partial  w' }{\partial x_l}\rangle) \\
+&&\quad{} (-174) \qquad{} \quad{}(-261) \nonumber
+\end{eqnarray}
+
+\noindent $\bullet$  \textbf{Transport equations for $uv$, $\langle uv\rangle$, and $\langle u'v'\rangle$}
+\begin{eqnarray}
+\frac{\partial uv }{\partial t}
++u_l\frac{\partial uv }{\partial x_l}
+&=&-(u\frac{\partial p }{\partial y}+v\frac{\partial p }{\partial x})
++\frac{1}{Re}(\frac{\partial^2 uv }{\partial x_l\partial x_l}-2\frac{\partial u }{\partial x_l}\frac{\partial v }{\partial x_l}) \\
+(-145) &&\quad{}  \quad{}(-199) \quad{}  \qquad{} (-163) \quad{} \quad{} (-250)\nonumber \\
+\frac{\partial \langle u\rangle \langle v\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u\rangle \langle v\rangle }{\partial x_l}
+&=&(\langle v'u_l'\rangle \frac{\partial \langle u \rangle}{\partial x_l}+\langle u'u_l'\rangle \frac{\partial \langle v \rangle  }{\partial x_l})
+-(\frac{\partial \langle v'u_l'\rangle \langle u \rangle }{\partial x_l}+\frac{\partial \langle u'u_l'\rangle \langle v \rangle }{\partial x_l}) \nonumber \\
+(-151) \quad{}&&\qquad{} \qquad{}(-193) \qquad{}\qquad{}  \qquad{} \qquad{} (-181)\nonumber \\
+&-&(\langle u\rangle \frac{\partial \langle p\rangle }{\partial y}+\langle v \rangle \frac{\partial \langle p\rangle }{\partial x})
++\frac{1}{Re}(\frac{\partial^2 \langle u\rangle \langle v \rangle}{\partial x_l\partial x_l}-2\frac{\partial \langle u\rangle }{\partial x_l} \frac{\partial \langle v\rangle }{\partial x_l}) \\
+&&\qquad{}\quad{} (-205) \qquad{} \qquad{}  (-169)\quad{} \qquad{} (-256)\nonumber \\
+\frac{\partial \langle u'w'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u'w'\rangle }{\partial x_l}
+&=&-(\langle w'u_l'\rangle \frac{\partial \langle u \rangle  }{\partial x_l}+\langle u'u_l'\rangle \frac{\partial \langle w \rangle  }{\partial x_l})
+-\frac{\partial \langle u'w'u_l'\rangle}{\partial x_l}  \nonumber \\
+(-157) \quad{}&&\qquad{} \qquad{}(-193)  \qquad{}\qquad{} \qquad{} (-187)\nonumber \\
+&-&(\langle u' \frac{\partial  p' }{\partial z}\rangle +\langle w' \frac{\partial p' }{\partial x}\rangle)
++\frac{1}{Re}(\frac{\partial^2 \langle u'v' \rangle}{\partial x_l\partial x_l}-2\langle \frac{\partial  u' }{\partial x_l}\frac{\partial  v' }{\partial x_l}\rangle) \\
+ &&\qquad{}\quad{} (-211) \qquad{} \qquad{}  (-175)\quad{} \qquad{} (-262)\nonumber 
+\end{eqnarray}
+
+
+\noindent $\bullet$  \textbf{Transport equations for $uw$, $\langle uw\rangle$, and $\langle u'w'\rangle$}
+\begin{eqnarray}
+\frac{\partial uw }{\partial t}
++u_l\frac{\partial uw }{\partial x_l}
+&=&-(u\frac{\partial p }{\partial z}+w\frac{\partial p }{\partial x})
++\frac{1}{Re}(\frac{\partial^2 uw }{\partial x_l\partial x_l}-2\frac{\partial u }{\partial x_l}\frac{\partial w }{\partial x_l}) \\
+(-146) &&\quad{}  \quad{}(-200) \quad{}  \qquad{} (-164) \quad{} \quad{} (-251)\nonumber \\
+\frac{\partial \langle u\rangle \langle w\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u\rangle \langle w\rangle }{\partial x_l}
+&=&(\langle w'u_l'\rangle \frac{\partial \langle u \rangle}{\partial x_l}+\langle u'u_l'\rangle \frac{\partial \langle w \rangle  }{\partial x_l})
+-(\frac{\partial \langle w'u_l'\rangle \langle u \rangle }{\partial x_l}+\frac{\partial \langle u'u_l'\rangle \langle w \rangle }{\partial x_l}) \nonumber \\
+(-152) \quad{}&&\qquad{} \qquad{}(-194) \qquad{}\qquad{}  \qquad{} \qquad{} (-182)\nonumber \\
+&-&(\langle u\rangle \frac{\partial \langle p\rangle }{\partial z}+\langle w \rangle \frac{\partial \langle p\rangle }{\partial x})
++\frac{1}{Re}(\frac{\partial^2 \langle u\rangle \langle w \rangle}{\partial x_l\partial x_l}-2\frac{\partial \langle u\rangle }{\partial x_l} \frac{\partial \langle w\rangle }{\partial x_l}) \\
+&&\qquad{}\quad{} (-206) \qquad{} \qquad{}  (-170)\quad{} \qquad{} (-257)\nonumber \\
+\frac{\partial \langle u'w'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u'w'\rangle }{\partial x_l}
+&=&-(\langle w'u_l'\rangle \frac{\partial \langle u \rangle  }{\partial x_l}+\langle u'u_l'\rangle \frac{\partial \langle w \rangle  }{\partial x_l})
+-\frac{\partial \langle u'w'u_l'\rangle}{\partial x_l} \nonumber \\
+(-158) \quad{}&&\qquad{} \qquad{}(-194)  \qquad{}\qquad{} \qquad{} (-188)\nonumber \\
+&-&(\langle u' \frac{\partial  p' }{\partial z}\rangle +\langle w' \frac{\partial p' }{\partial x}\rangle)
++\frac{1}{Re}(\frac{\partial^2 \langle u'w' \rangle}{\partial x_l\partial x_l}-2\langle \frac{\partial  u' }{\partial x_l}\frac{\partial  w' }{\partial x_l}\rangle)  \\
+&&\qquad{}\quad{} (-212) \qquad{} \qquad{}  (-176)\quad{} \qquad{} (-263)\nonumber 
+\end{eqnarray}
+
+
+\noindent $\bullet$  \textbf{Transport equations for $vw$, $\langle vw\rangle$, and $\langle v'w'\rangle$}
+\begin{eqnarray}
+\frac{\partial vw }{\partial t}
++u_l\frac{\partial vw }{\partial x_l}
+&=&-(v\frac{\partial p }{\partial z}+w\frac{\partial p }{\partial y})
++\frac{1}{Re}(\frac{\partial^2 vw }{\partial x_l\partial x_l}-2\frac{\partial v }{\partial x_l}\frac{\partial w }{\partial x_l}) \\
+(-147) &&\quad{}  \quad{}(-201) \quad{}  \qquad{} (-165) \quad{} \quad{} (-252)\nonumber \\
+\frac{\partial \langle v\rangle \langle w\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle v\rangle \langle w\rangle }{\partial x_l}
+&=&\langle w'u_l'\rangle \frac{\partial \langle v \rangle}{\partial x_l}+\langle v'u_l'\rangle \frac{\partial \langle w \rangle  }{\partial x_l}
+-(\frac{\partial \langle w'u_l'\rangle \langle v \rangle }{\partial x_l}+\frac{\partial \langle v'u_l'\rangle \langle w \rangle }{\partial x_l}) \nonumber \\
+(-153) \quad{}&&\qquad{} \qquad{}(-195) \qquad{}\qquad{}  \qquad{} \qquad{} (-183)\nonumber \\
+&-&(\langle v\rangle \frac{\partial \langle p\rangle }{\partial z}+\langle w \rangle \frac{\partial \langle p\rangle }{\partial y})
++\frac{1}{Re}(\frac{\partial^2 \langle v\rangle \langle w \rangle}{\partial x_l\partial x_l}-2\frac{\partial \langle v\rangle }{\partial x_l} \frac{\partial \langle w\rangle }{\partial x_l}) \\
+&&\qquad{}\quad{} (-207) \qquad{} \qquad{}  (-171)\quad{} \qquad{} (-258)\nonumber \\
+\frac{\partial \langle v'w'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle v'w'\rangle }{\partial x_l}
+&=&-(\langle w'u_l'\rangle \frac{\partial \langle v \rangle  }{\partial x_l}+\langle v'u_l'\rangle \frac{\partial \langle w \rangle  }{\partial x_l})
+-\frac{\partial \langle v'w'u_l'\rangle}{\partial x_l} \nonumber \\
+(-159) \quad{}&&\qquad{} \qquad{}(-195)  \qquad{}\qquad{} \qquad{} (-189)\nonumber \\
+&-&(\langle v' \frac{\partial  p' }{\partial z}\rangle +\langle w' \frac{\partial p' }{\partial y}\rangle)
++\frac{1}{Re}(\frac{\partial^2 \langle v'w' \rangle}{\partial x_l\partial x_l}-2\langle \frac{\partial  v' }{\partial x_l}\frac{\partial  w' }{\partial x_l}\rangle) \\
+&&\qquad{}\quad{} (-213) \qquad{} \qquad{}  (-177)\quad{} \qquad{} (-264)\nonumber 
+\end{eqnarray}
+
+
+\noindent $\bullet$  \textbf{Transport equations for $\frac{1}{2} \theta^2$, $\frac{1}{2}\langle \theta\rangle^2 $, and $\frac{1}{2}\langle \theta'\theta'\rangle$}
+\begin{eqnarray}
+\frac{\partial \theta^2/2 }{\partial t}
++u_l\frac{\partial \theta^2/2 }{\partial x_l}
+&=&\frac{1}{Pe}(\frac{\partial^2 \theta^2/2 }{\partial x_l\partial x_l}-\frac{\partial \theta }{\partial x_l}\frac{\partial \theta }{\partial x_l}) \\
+(-26)   &&\qquad{} (-29) \quad{} \quad{} (-35) \nonumber \\
+\frac{\partial \langle \theta\rangle^2/2 }{\partial t}
++\langle u_l\rangle \frac{\partial \langle \theta\rangle^2 /2 }{\partial x_l}
+&=&\langle \theta'u_l'\rangle \frac{\partial \langle \theta \rangle}{\partial x_l}
+-\frac{\partial \langle \theta'u_l'\rangle \langle \theta \rangle }{\partial x_l} 
++\frac{1}{Pe}(\frac{\partial^2 \langle \theta\rangle^2 /2}{\partial x_l\partial x_l}-\frac{\partial \langle \theta\rangle }{\partial x_l} \frac{\partial \langle \theta\rangle }{\partial x_l}) \\
+(-27) \quad{}   &&\quad{} (-34) \quad{} \quad{} (-32)\qquad{}\qquad{} (-30) \quad{} \qquad{} (-36) \nonumber \\
+\frac{\partial \langle \theta'^2\rangle/2 }{\partial t}
++\langle \theta_l\rangle \frac{\partial \langle \theta'^2\rangle/2 }{\partial x_l}
+&=&-\langle \theta'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l}
+-\frac{1}{2}\frac{\partial \langle \theta'^2u_l'\rangle}{\partial x_l} 
++\frac{1}{Pe}(\frac{\partial^2 \langle \theta'^2 /2\rangle}{\partial x_l\partial x_l}-\langle \frac{\partial  \theta' }{\partial x_l}\frac{\partial  \theta' }{\partial x_l}\rangle) \\
+(-28) \quad{}   &&\quad{} (-34) \qquad{} \quad{} (-33)\qquad{}\qquad{} (-31) \quad{} \quad{} (-37) \nonumber 
+\end{eqnarray}
+
+\noindent $\bullet$  \textbf{Transport equations for $u_i\theta$, $\langle u_i\theta\rangle$, and $\langle u_i'\theta'\rangle$}
+\begin{eqnarray}
+\frac{\partial u_i\theta }{\partial t}
++u_l\frac{\partial u_i\theta }{\partial x_l}
+%&=&-\frac{\partial p\theta }{\partial x_i}+p\frac{\partial \theta }{\partial x_i}
+&=&-\theta \frac{ \partial p}{\partial x_i}
++(\frac{1}{Re}\frac{\partial }{\partial x_l}(\theta\frac{\partial u_i }{\partial x_l})+\frac{1}{Pe}\frac{\partial }{\partial x_l}(u_i\frac{\partial \theta }{\partial x_l})) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial u_i }{\partial x_l}\frac{\partial \theta }{\partial x_l}  \\ 
+\frac{\partial \langle u_i\rangle \langle \theta\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u_i\rangle \langle \theta\rangle }{\partial x_l}
+&=&(\langle \theta'u_l'\rangle \frac{\partial \langle u_i \rangle}{\partial x_l}+\langle u_i'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l})
+-(\frac{\partial \langle \theta'u_l'\rangle \langle u_i \rangle }{\partial x_l}+\frac{\partial \langle u_i'u_l'\rangle \langle \theta \rangle }{\partial x_l}) \nonumber \\
+%&-&\frac{\partial \langle p\rangle \langle u_i\rangle }{\partial x_i} +\langle p \rangle \frac{\partial \langle \theta \rangle }{\partial x_i} 
+&-&\langle \theta \rangle \frac{\partial \langle p \rangle }{\partial x_i} 
++(\frac{1}{Re}\frac{\partial}{\partial x_l}(\langle \theta\rangle \frac{\partial \langle u_i\rangle}{\partial x_l}) + \frac{1}{Pe}\frac{\partial}{\partial x_l}(\langle u_i \rangle \frac{\partial \langle \theta\rangle}{\partial x_l})) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial \langle u_i\rangle }{\partial x_l}\frac{\partial \langle \theta \rangle}{\partial x_l} \\
+\frac{\partial \langle u_i'\theta'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u_i'\theta'\rangle }{\partial x_l}
+&=&-(\langle \theta'u_l'\rangle \frac{\partial \langle u_i \rangle  }{\partial x_l}
++\langle u_i'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l})
+-\frac{\partial \langle u_i'\theta'u_l'\rangle}{\partial x_l}  
+%-\frac{\partial \langle p'\theta' \rangle}{\partial x_i} +\langle p' \frac{\partial \theta' }{\partial x_i}\rangle \nonumber \\
+-\langle \theta' \frac{\partial p' }{\partial x_i}\rangle \nonumber \\
+&+&(\frac{1}{Re}\frac{\partial }{\partial x_l}\langle \theta' \frac{\partial u_i' }{\partial x_l}\rangle+\frac{1}{Pe}\frac{\partial }{\partial x_l}\langle u_i'\frac{\partial \theta' }{\partial x_l}\rangle )
+-(\frac{1}{Re}+\frac{1}{Pe})\langle \frac{\partial u_i' }{\partial x_l}\frac{\partial \theta' }{\partial x_l}\rangle  
+\end{eqnarray}
+
+
+
+
+
+
+\noindent $\bullet$  \textbf{Transport equations for $u\theta$, $\langle u\theta\rangle$, and $\langle u'\theta'\rangle$}
+\begin{eqnarray}
+\frac{\partial u\theta }{\partial t}
++u_l\frac{\partial u\theta }{\partial x_l}
+%&=&-\frac{\partial p\theta }{\partial x}+p\frac{\partial \theta }{\partial x}
+&=&-\theta \frac{\partial p }{\partial x}
++(\frac{1}{Re}\frac{\partial }{\partial x_l}(\theta\frac{\partial u }{\partial x_l})+\frac{1}{Pe}\frac{\partial }{\partial x_l}(u\frac{\partial \theta }{\partial x_l}) )\nonumber \\
+(-38)    && (-77) \qquad{} \quad{}\quad{} \qquad{} (-47) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial u }{\partial x_l}\frac{\partial \theta }{\partial x_l}  \\ 
+ &&  \qquad{} \qquad{} (-86) \nonumber \\
+\frac{\partial \langle u\rangle \langle \theta\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u\rangle \langle \theta\rangle }{\partial x_l}
+&=&(\langle \theta'u_l'\rangle \frac{\partial \langle u \rangle}{\partial x_l}+\langle u'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l})
+-(\frac{\partial \langle \theta'u_l'\rangle \langle u \rangle }{\partial x_l}+\frac{\partial \langle u'u_l'\rangle \langle \theta \rangle }{\partial x_l}) \nonumber \\
+(-41) \quad{}   && \qquad{} \qquad{} (-62)\quad{}\quad{}\quad{} \qquad{}\quad{}\qquad{} (-56) \nonumber \\
+%&-&\frac{\partial \langle p\rangle \langle u\rangle }{\partial x} +\langle p \rangle \frac{\partial \langle \theta \rangle }{\partial x} 
+&-&\langle \theta  \rangle \frac{\partial \langle p \rangle }{\partial x} 
++(\frac{1}{Re}\frac{\partial}{\partial x_l}(\langle \theta\rangle \frac{\partial \langle u\rangle}{\partial x_l}) + \frac{1}{Pe}\frac{\partial}{\partial x_l}(\langle u \rangle \frac{\partial \langle \theta\rangle}{\partial x_l})) \nonumber \\
+ && (-80) \qquad{} \qquad{} \quad{}\quad{}\qquad{} (-50) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial \langle u\rangle }{\partial x_l}\frac{\partial \langle \theta \rangle}{\partial x_l} \\
+&&  \qquad{} \qquad{} (-89) \nonumber \\
+\frac{\partial \langle u'\theta'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle u'\theta'\rangle }{\partial x_l}
+&=&-(\langle \theta'u_l'\rangle \frac{\partial \langle u \rangle  }{\partial x_l}
++\langle u'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l})
+-\frac{\partial \langle u'\theta'u_l'\rangle}{\partial x_l}  %\nonumber \\
+%-\frac{\partial \langle p'\theta' \rangle}{\partial x} +\langle p' \frac{\partial \theta' }{\partial x}\rangle \nonumber \\
+-\langle \theta' \frac{\partial p' }{\partial x}\rangle \nonumber \\
+(-44) \quad{}   && \quad{} \qquad{} \quad{} (-62)\qquad{}\qquad{}\qquad{} (-59)\qquad{} (-83) \nonumber \\
+&+&(\frac{1}{Re}\frac{\partial }{\partial x_l}\langle \theta' \frac{\partial u' }{\partial x_l}\rangle+\frac{1}{Pe}\frac{\partial }{\partial x_l}\langle u'\frac{\partial \theta' }{\partial x_l}\rangle )
+-(\frac{1}{Re}+\frac{1}{Pe})\langle \frac{\partial u' }{\partial x_l}\frac{\partial \theta' }{\partial x_l}\rangle  \\
+&& \quad{}\qquad{} \quad{} \quad{}(-53)\qquad{}\qquad{}\qquad{}\qquad{}\quad{}\qquad{} (-92) \nonumber 
+\end{eqnarray}
+
+
+
+
+\noindent $\bullet$  \textbf{Transport equations for $v\theta$, $\langle v\theta\rangle$, and $\langle v'\theta'\rangle$}
+\begin{eqnarray}
+\frac{\partial v\theta }{\partial t}
++u_l\frac{\partial v\theta }{\partial x_l}
+%&=&-\frac{\partial p\theta }{\partial y}+p\frac{\partial \theta }{\partial y}
+&=&-\theta\frac{\partial p}{\partial y}
++(\frac{1}{Re}\frac{\partial }{\partial x_l}(\theta\frac{\partial v }{\partial x_l})+\frac{1}{Pe}\frac{\partial }{\partial x_l}(v\frac{\partial \theta }{\partial x_l})) \nonumber \\
+(-39)    && (-78) \qquad{} \quad{}\quad{} \qquad{} (-48) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial v }{\partial x_l}\frac{\partial \theta }{\partial x_l}  \\ 
+ &&  \qquad{} \qquad{} (-87) \nonumber \\
+\frac{\partial \langle v\rangle \langle \theta\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle v\rangle \langle \theta\rangle }{\partial x_l}
+&=&\langle \theta'u_l'\rangle \frac{\partial \langle v \rangle}{\partial x_l}+\langle v'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l}
+-(\frac{\partial \langle \theta'u_l'\rangle \langle v \rangle }{\partial x_l}+\frac{\partial \langle v'u_l'\rangle \langle \theta \rangle }{\partial x_l}) \nonumber \\
+(-42) \quad{}   && \qquad{} \qquad{} (-63)\quad{}\quad{}\quad{} \qquad{}\quad{}\qquad{} (-57) \nonumber \\
+%&-&\frac{\partial \langle p\rangle \langle v\rangle }{\partial y} +\langle p \rangle \frac{\partial \langle \theta \rangle }{\partial y} 
+&-&\langle \theta \rangle \frac{\partial \langle p \rangle }{\partial y}
++(\frac{1}{Re}\frac{\partial}{\partial x_l}(\langle \theta\rangle \frac{\partial \langle v\rangle}{\partial x_l}) + \frac{1}{Pe}\frac{\partial}{\partial x_l}(\langle v \rangle \frac{\partial \langle \theta\rangle}{\partial x_l})) \nonumber \\
+&& (-81) \qquad{} \qquad{} \quad{}\quad{}\qquad{} (-51) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial \langle v\rangle }{\partial x_l}\frac{\partial \langle \theta \rangle}{\partial x_l} \\
+&&  \qquad{} \qquad{} (-90) \nonumber \\
+\nonumber \\
+\nonumber \\
+\frac{\partial \langle v'\theta'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle v'\theta'\rangle }{\partial x_l}
+&=&-(\langle \theta'u_l'\rangle \frac{\partial \langle v \rangle  }{\partial x_l}
++\langle v'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l})
+-\frac{\partial \langle v'\theta'u_l'\rangle}{\partial x_l}  %\nonumber \\
+-\langle \theta' \frac{\partial p' }{\partial y}\rangle \nonumber \\
+(-45) \quad{}   && \quad{} \qquad{} \quad{} (-63)\qquad{}\qquad{}\qquad{} (-60)\qquad{} (-84) \nonumber \\
+%-\frac{\partial \langle p'\theta' \rangle}{\partial y} +\langle p' \frac{\partial \theta' }{\partial y}\rangle \nonumber \\
+&+&(\frac{1}{Re}\frac{\partial }{\partial x_l}\langle \theta' \frac{\partial v' }{\partial x_l}\rangle+\frac{1}{Pe}\frac{\partial }{\partial x_l}\langle v'\frac{\partial \theta' }{\partial x_l}\rangle )
+-(\frac{1}{Re}+\frac{1}{Pe})\langle \frac{\partial v' }{\partial x_l}\frac{\partial \theta' }{\partial x_l}\rangle  \\
+&& \quad{}\qquad{} \quad{} \quad{}(-54)\qquad{}\qquad{}\qquad{}\qquad{}\quad{}\qquad{} (-93) \nonumber
+\end{eqnarray}
+
+
+
+
+
+
+\noindent $\bullet$  \textbf{Transport equations for $w\theta$, $\langle w\theta\rangle$, and $\langle w'\theta'\rangle$}
+\begin{eqnarray}
+\frac{\partial w\theta }{\partial t}
++u_l\frac{\partial w\theta }{\partial x_l}
+%&=&-\frac{\partial p\theta }{\partial z}+p\frac{\partial \theta }{\partial z}
+&=&-\theta\frac{\partial  p}{\partial z}
++(\frac{1}{Re}\frac{\partial }{\partial x_l}(\theta\frac{\partial w }{\partial x_l})+\frac{1}{Pe}\frac{\partial }{\partial x_l}(w\frac{\partial \theta }{\partial x_l}) )\nonumber \\
+(-40)    && (-79) \qquad{} \quad{}\quad{} \qquad{} (-49) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial w }{\partial x_l}\frac{\partial \theta }{\partial x_l}  \\ 
+&&  \qquad{} \qquad{} (-88) \nonumber \\
+\frac{\partial \langle w\rangle \langle \theta\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle w\rangle \langle \theta\rangle }{\partial x_l}
+&=&\langle \theta'u_l'\rangle \frac{\partial \langle w \rangle}{\partial x_l}+\langle w'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l}
+-(\frac{\partial \langle \theta'u_l'\rangle \langle w \rangle }{\partial x_l}+\frac{\partial \langle w'u_l'\rangle \langle \theta \rangle }{\partial x_l}) \nonumber \\
+(-43) \quad{}   && \qquad{} \qquad{} (-64)\quad{}\quad{}\quad{} \qquad{}\quad{}\qquad{} (-58) \nonumber \\
+%&-&\frac{\partial \langle p\rangle \langle w\rangle }{\partial z} +\langle p \rangle \frac{\partial \langle \theta \rangle }{\partial z} 
+&-&\langle \theta  \rangle \frac{\partial \langle p \rangle }{\partial z} 
++(\frac{1}{Re}\frac{\partial}{\partial x_l}(\langle \theta\rangle \frac{\partial \langle w\rangle}{\partial x_l}) + \frac{1}{Pe}\frac{\partial}{\partial x_l}(\langle w \rangle \frac{\partial \langle \theta\rangle}{\partial x_l})) \nonumber \\
+&& (-82) \qquad{} \qquad{} \quad{}\quad{}\qquad{} (-52) \nonumber \\
+&-&(\frac{1}{Re}+\frac{1}{Pe})\frac{\partial \langle w\rangle }{\partial x_l}\frac{\partial \langle \theta \rangle}{\partial x_l} \\
+&&  \qquad{} \qquad{} (-91) \nonumber \\
+\frac{\partial \langle w'\theta'\rangle }{\partial t}
++\langle u_l\rangle \frac{\partial \langle w'\theta'\rangle }{\partial x_l}
+&=&-(\langle \theta'u_l'\rangle \frac{\partial \langle w \rangle  }{\partial x_l}
++\langle w'u_l'\rangle \frac{\partial \langle \theta \rangle  }{\partial x_l})
+-\frac{\partial \langle w'\theta'u_l'\rangle}{\partial x_l}  %\nonumber \\
+%-\frac{\partial \langle p'\theta' \rangle}{\partial z} +\langle p' \frac{\partial \theta' }{\partial z}\rangle \nonumber \\
+-\langle \theta' \frac{\partial p' }{\partial z}\rangle \nonumber \\
+(-46) \quad{}   && \quad{} \qquad{} \quad{} (-64)\qquad{}\qquad{}\qquad{} (-61)\qquad{} (-85) \nonumber \\
+&+&(\frac{1}{Re}\frac{\partial }{\partial x_l}\langle \theta' \frac{\partial w' }{\partial x_l}\rangle+\frac{1}{Pe}\frac{\partial }{\partial x_l}\langle w'\frac{\partial \theta' }{\partial x_l}\rangle) 
+-(\frac{1}{Re}+\frac{1}{Pe})\langle \frac{\partial w' }{\partial x_l}\frac{\partial \theta' }{\partial x_l}\rangle \\
+&& \quad{}\qquad{} \quad{} \quad{}(-55)\qquad{}\qquad{}\qquad{}\qquad{}\quad{}\qquad{} (-94) \nonumber 
+\end{eqnarray}
+
+\end{document}

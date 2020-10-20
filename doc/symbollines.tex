@@ -1,0 +1,165 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Symbols   Symbols   Symbols   Symbols   Symbols   Symbols   Symbols
+%
+%   (c) Copyright, 1985 by Moon J. Lee
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\font\smallfont=cmsy10 at 10truept
+\textfont8=\smallfont
+\mathchardef\bigCircle="280D
+
+\font\bigfont=cmsy10 at 14.4truept
+\textfont9=\bigfont
+\mathchardef\tiMes="2902        %
+
+\font\Bigfont=cmsy10 at 17.28truept
+\textfont10=\Bigfont
+\mathchardef\DiaMond="2A05        %
+%\mathchardef\buLlet="2A0F
+\mathchardef\cirCle="2A0E
+\mathchardef\BigCircle="2A0D
+
+\font\Bbigfont=cmsy10 at 24.88truept
+\textfont11=\Bbigfont
+\mathchardef\buLLet="2B0F
+
+%------------------------------------------------------------------------------%
+
+\def\bigCirc{\raise 0.3ex\hbox{$\bigCircle$}\nobreak$\,$}
+\def\Bigcirc{$\BigCircle$}                    %   very big circle (0.2" Diam.)
+\def\Circ{\hbox{$\cirCle$}\nobreak$\,$}
+\def\Bullet{\raise-0.35ex\hbox{$\buLLet$}\nobreak$\,$}
+\def\triangleup{$\bigtriangleup$\nobreak$\,$}
+\def\triangledown{\raise 0.2em\hbox{$\bigtriangledown$}\nobreak$\,$}
+\def\uptriangle{\triangleup}       \def\downtriangle{\triangledown}
+\def\Diamond{$\DiaMond$\nobreak$\,$}
+
+\def\minisquare{\hbox{${\vcenter{
+               \hrule height 0.3pt \kern-0.4pt
+               \hbox{\vrule width  0.3pt height 3.0pt \kern 2.6pt
+               \vrule width  0.3pt height 3.0pt} \kern-0.4pt
+               \hrule height 0.3pt}}$}}
+%\def\square{\raise 0.175ex\hbox{${\vcenter{
+%               \hrule height 0.8truept       \kern-0.4truept
+%               \hbox{\vrule width 0.8truept height 8.0truept \kern 7.6truept
+%                     \vrule width 0.8truept height 8.0truept} \kern-0.4truept
+%               \hrule height 0.8truept}}$}\nobreak$\,$}
+\def\ssquare{\raise 0.175ex\hbox{${\vcenter{
+               \hrule height 0.5truept       \kern-0.25truept
+               \hbox{\vrule width 0.5truept height 3.0truept \kern 2.75truept
+                     \vrule width 0.5truept height 3.0truept} \kern-0.25truept
+               \hrule height 0.5truept}}$}\nobreak$\,$}
+\def\squarex{\raise 0.175ex\hbox{${\vcenter{
+               \hrule height 0.8truept       \kern-1.80truept
+          \hbox{\vrule width 0.8truept height 8.0truept \kern-1.95truept
+                \raise 0.8truept\hbox{$\tiMes$}     \kern-6.70truept
+                \vrule width 0.8truept height 8.0truept} \kern-0.80truept
+               \hrule height 0.8truept}}$}\nobreak$\,$}
+
+\def\sqbull{\raise0.175ex\hbox{\vrule height 1.4ex width 1.6ex depth 0.2ex}\nobreak$\,$}
+\def\smsqbull{\raise0.175ex\hbox{\vrule height 0.8ex width 0.9ex depth 0.2ex}\nobreak$\,$}
+
+\def\Diamondplus{${\vcenter{\vcenter{\DiaMond} \kern-10truept
+                            \hbox{\vrule width .4truept}\kern -3truept
+                            \hrule height .4truept}}$\nobreak$\,$}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         Lines   Lines   Lines   Lines   Lines   Lines   Lines
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcount\ndots
+
+\def\drawline#1#2{\raise 2.5truept\vbox{\hrule width #1truept height #2truept}}
+\def\moonspace#1{\hskip #1truept}
+
+\def\shortchain{\drawline{6.0}{0.75}}     
+\def\chain{\drawline{12.0}{0.75}}     
+\def\thinchain{\drawline{12.0}{0.25}}     
+\def\chainspace{\chain\moonspace{2}}
+\def\shortchainspace{\shortchain\moonspace{2}}
+\def\thinchainspace{\thinchain\moonspace{2}}
+\def\dashy{\drawline{4.00}{0.76}}     
+\def\thindashy{\drawline{4.00}{0.25}}     
+\def\dashyspace{\dashy\moonspace{2}}
+\def\thindashyspace{\thindashy\moonspace{2}}
+\def\longdashy{\drawline{8.00}{0.76}} 
+\def\thinlongdashy{\drawline{8.00}{0.25}} 
+\def\longdashyspace{\longdashy\moonspace{2}}
+\def\thinlongdashyspace{\thinlongdashy\moonspace{2}}
+\def\dotty{\drawline{1.00}{0.75}}     
+\def\thindotty{\drawline{1.00}{0.25}}     
+\def\dottyspace{\dotty\moonspace{2}}
+
+\def\solid{\drawline{24}{0.75}\nobreak$\,$}  
+\def\Solid{\drawline{24}{1.00}\nobreak$\,$}  
+\def\thinsolid{\drawline{24}{0.25}\nobreak$\,$}  
+\def\circthinsolid{$\circ$\drawline{6}{0.25}$\circ$\drawline{6}{0.25}$\circ$\nobreak$\,$}  
+
+\def\circthinsolidpict{\begin{picture}(10,2)\linethickness{0.5pt}\put(0,1){\circle{3}}\put(0.5,1){\line(1,0){3}}\put(3.8,1){\circle{3}}\put(4.5,1){\line(1,0){3}}\put(7.8,1){\circle{3}}\end{picture}}  
+
+\def\thinsolidpict{\begin{picture}(10,2)\linethickness{0.5pt}\put(0,1){\line(1,0){8}}\end{picture}}  
+
+\def\thicksolidpict{\begin{picture}(10,2)\linethickness{1pt}\put(0,1){\line(1,0){8}}\end{picture}} 
+
+\def\thindashedpict{\begin{picture}(11,2)\linethickness{0.5pt}\put(0,1){\line(1,0){2}}\put(2.5,1){\line(1,0){2}}\put(5,1){\line(1,0){2}}\put(7.5,1){\line(1,0){2}}\end{picture}}  
+
+\def\dashedpict{\begin{picture}(11,2)\linethickness{0.75pt}\put(0,1){\line(1,0){2}}\put(2.5,1){\line(1,0){2}}\put(5,1){\line(1,0){2}}\put(7.5,1){\line(1,0){2}}\end{picture}}  
+
+\def\squarethinsolidpict{\begin{picture}(10,2)\linethickness{0.5pt}\put(0,0.3){{\tiny $\square$}}\put(1.5,1){\line(1,0){2}}\put(3.3,0.3){{\tiny $\square$}}\put(4.7,1){\line(1,0){2}}\put(6.3,0.3){{\tiny $\square$}}\end{picture}}  
+
+\def\diamondthinsolidpict{\begin{picture}(10,2)\linethickness{0.5pt}\put(0,0.3){{\small $\diamond$}}\put(1.5,1){\line(1,0){2}}\put(3.3,0.3){{\small $\diamond$}}\put(4.7,1){\line(1,0){2}}\put(6.3,0.3){{\small $\diamond$}}\end{picture}}  
+
+%  ---------------------------
+
+\def\dotbox{\hbox{\dottyspace}}
+\def\dotted{\hbox{\leaders\dotbox\hskip 24truept}\nobreak$\,$}  
+%  .  .  .  .  .  .  .  .  .  .
+
+\def\dashbox{\hbox{\dashyspace}}  
+\def\dashed{\hbox {\ndots=0 \loop\ifnum\ndots<3\advance\ndots by 1
+        \dashbox\repeat\dashy}\nobreak$\,$}       
+\def\thindashed{\hbox {\ndots=0 \loop\ifnum\ndots<3\advance\ndots by 1
+        \dashbox\repeat\thindashy}\nobreak$\,$}       
+\def\thindashbox{\hbox{\thindashyspace}}  
+\def\thindash{\hbox {\ndots=0 \loop\ifnum\ndots<3\advance\ndots by 1
+        \thindashbox\repeat\thindashy}\nobreak$\,$}       
+%   --  --  --  --  --  --  --
+
+\def\longdashbox{\hbox{\longdashyspace}}  
+\def\thinlongdashbox{\hbox{\thinlongdashyspace}}  
+\def\longdash{\hbox {\ndots=0 \loop\ifnum\ndots<3\advance\ndots by 1
+        \longdashbox\repeat\longdashy}\nobreak$\,$}       
+\def\thinlongdash{\hbox {\ndots=0 \loop\ifnum\ndots<3\advance\ndots by 1
+        \thinlongdashbox\repeat\thinlongdashy}\nobreak$\,$}       
+%   ----  ----  ----  ----  ----  
+
+\def\chndot{\hbox{\chainspace\dottyspace\chain}\nobreak$\,$}   
+\def\dotdashed{\hbox{\shortchainspace\dottyspace\shortchain}\nobreak$\,$}      
+%   ----  .  ----  .  ----
+
+\def\chndash{\hbox{\chainspace\dashyspace\chain}\nobreak$\,$}      
+\def\thinchndash{\hbox{\thinchainspace\thindashyspace\thinchain}\nobreak$\,$}      
+%   ----  --  ----  --  ----
+
+\def\chndashdash{\hbox{\chainspace\dashyspace\dashyspace\chain}\nobreak$\,$}
+%   ----  --  ----  --  ----
+
+\def\dotdashdash{\hbox{\dottyspace\dashyspace\dashyspace\dottyspace}\nobreak$\,$}
+%   ----  --  ----  --  ----
+
+\def\chndotdot{\hbox{\chainspace\dottyspace\dottyspace\chain}\nobreak$\,$}
+%   ----  .  .  ----  .  .  ----  
+
+\def\chndotdotdot{\hbox{\chainspace\dottyspace\dottyspace\dottyspace\chain}\nobreak$\,$}
+%   ----  .  .  .  ----  .  .  .  ----  
+
+\def\longdot{\hbox{\drawline{2}{.5}\moonspace{2}}}
+
+\def\longdots{\hbox{\leaders\longdot\hskip 24truept}\nobreak$\,$}
+
+\def\Longdot{\hbox{\drawline{3}{.5}\moonspace{2}}}
+
+\def\Longdots{\hbox{\leaders\Longdot\hskip 24truept}\nobreak$\,$}

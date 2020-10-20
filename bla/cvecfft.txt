@@ -1,0 +1,24 @@
+c ***********************************************************************
+c
+c $HeadURL$
+c $LastChangedDate$
+c $LastChangedBy$
+c $LastChangedRevision$
+c
+c ***********************************************************************
+
+conversion for caching
+
+1. outer loop 1111 in j in rfftf1
+2. calling all rad subr once for each "vector" element
+3. taking away the j loops in all rad subr
+4. taking away the jmp and m calling argument for all rad subr
+5. including the copying loop after the rad subr in th 1111 loop,
+   taking away the j loops there
+6. copying data into a one-d cache array cl and calling
+   with this as an argument for both main array and workspace,
+   copying out of this array for na = 0 or 1
+   inc argument for the rad subroutines set to 1
+7. taking away the inc argument to the rad subroutines
+8. letting radf2f or radf4f take care of the copying into cl
+

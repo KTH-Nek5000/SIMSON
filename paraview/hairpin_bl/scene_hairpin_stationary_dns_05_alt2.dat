@@ -1,0 +1,36 @@
+# Simson ParaView scene file version
+1.0
+# Number of frames
+200
+# Colormap colormap_hairpin_08.xml
+colormap_hairpin_01.xml
+# Camera position (# values, [0 = open, 1 = closed])
+4 0
+4500.0 140.0 60.0
+4800.0 140.0 120.0
+4900.0 80.0 120.0
+4950.0 0.0 120.0
+# Focal position
+5 0
+4761.0 0.0 -5.0
+4661.0 -140.0 25.0
+4161.0 -140.0 25.0
+3000.0 0.0 -15.0
+0.0    0.0 -50.0
+# Zoom
+2 1
+1.0
+1.0
+# Camera view up vector
+2 1
+0.0 0.0 1.0
+0.0 0.0 1.0
+# Files: start (four digits), step length (in image numbering), number of frames for each field, last frame number, name of field (field.*.u.vtk) t150931_00001-01000.lam.vtk
+30
+1
+1
+156
+0
+none
+# Closed spline [0 = open, 1 = closed] Currently not in use
+0

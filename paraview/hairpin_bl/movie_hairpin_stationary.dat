@@ -1,0 +1,30 @@
+# Simson ParaView movie file version
+1.0
+# Title
+Hairpin LES
+# Input field data directory
+/scratch/mattias/Hairpin/Data-non-uniform-grid/
+# Scene files
+scene_hairpin_stationary_03.dat
+# Single frame file (this is where ParaView commands are used)
+single_frame_hairpin_contour.py
+# Trajectory and global movie output parameter filenames
+traj_stationary.dat glob_stationary.dat
+# Picture name
+frame_hairpin_stationary
+# Parallel Projection [0 = perspective, 1 = parallel]
+0
+# Down sample [sx sy sz]
+1 1 1
+# Cut off [xmin xmax ymin ymax zmin zmax]
+0 6999 0 185 0 383
+# Background color [RGB]
+0 0 0
+# View size [xdim ydim]
+800 600
+# Background mesh(es) [filenames or "none" if not used] grid-xz-hairpin.vtk grid-xy-hairpin.vtk
+grid-xz-hairpin.vtk grid-xy-hairpin.vtk
+# Mesh color [RGB]
+0 30 0
+# Start image number
+0

@@ -1,0 +1,28 @@
+# Simson ParaView movie file version
+1.0
+# Title
+Hairpin LES
+# Input field data directory
+./
+# Scene files
+scene_hairpin_aircraft_01.dat
+# Single frame file (this is where ParaView commands are used)
+single_frame_aircraft.py
+# Trajectory and global movie output parameter filenames
+traj_aircraft.dat glob_aircraft.dat
+# Picture name
+frame_hairpin
+# Parallel Projection [0 = perspective, 1 = parallel]
+0
+# Down sample [sx sy sz]
+1 1 1
+# Cut off [xmin xmax ymin ymax zmin zmax]
+0 1024 0 384 0 257
+# Background color [RGB]
+0 0 0
+# View size [xdim ydim]
+400 400
+# Background mesh(es) [filenames or "none" if not used]
+grid-xz-hairpin.vtk grid-xy-hairpin.vtk
+# Mesh color [RGB]
+255 255 255

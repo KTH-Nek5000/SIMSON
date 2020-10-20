@@ -1,0 +1,16 @@
+# @ job_name            = bla
+# @ job_type            = bluegene
+# @ comment             = "bla job"
+# @ error               = $(job_name).err
+# @ output              = $(job_name).out
+# @ environment         = COPY_ALL;
+# @ wall_clock_limit    = 2:00:00,2:00:00
+# @ notification        = always
+# @ notify_user         = pschlatt@mech.kth.se
+# @ bg_size             = 32
+# @ bg_connection       = prefer_torus
+# @ class               = large
+# @ queue
+# to turn the mapping: -env BGLMPI_MAPPING=TXYZ
+
+mpirun -np 64 -shell /pdc/vol/openssh/4.5p1/bin/ssh  -env BGLMPI_MAPPING=TXYZ -exe bla.64 -cwd `pwd` -mode VN

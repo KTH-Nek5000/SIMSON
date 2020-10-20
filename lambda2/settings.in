@@ -1,0 +1,28 @@
+vt	!type of output file
+1	!factor for interpolation in x
+1	!factor for interpolation in z
+.true.	!compute vorticity?
+.false.	!write out with uniform grid in y? (for volume rendering)
+151	!number of uniform grid points in y
+4.0     !lower bound of selection in y for uniform grid
+13.0	!upper bound of selection in y for uniform grid
+.false.	!reduce box? (just for output)
+15	!reduce box for output - x start
+46	!reduce box for output - x end
+3	!reduce box for output - y start
+56	!reduce box for output - y end
+5	!reduce box for output - z start
+30	!reduce box for output - z end
+8	!number of variables to write out, followed by that many lines 
+1	!variables: 1,2,3 - velocity, 4- lambda2, 5,6,7 - vorticity 8 - ufluct
+2
+3
+4
+5
+6
+7
+8
+3	!number of scalars to write out, followed by that many lines
+1	!scalars 1,2,3... (could be any scalars, for example 1,3,5,...)
+2
+3

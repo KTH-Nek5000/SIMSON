@@ -1,0 +1,4 @@
+1. Add parameterization to spline curve to control time spent between interpolation points
+2. Control light
+3. Add options to driver file to control whether trajectory and global parameter file should be generated or not
+4. Add option whether grid should be genreated or not (base grid on movie parameter file)

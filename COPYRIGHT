@@ -1,0 +1,43 @@
+******************************************************************************
+COPYRIGHT file for the Simson code $Rev$
+
+
+Copyright notice
+================
+In this text "Simson" refers to all files found in the Simson archive file.
+
+If you have obtained a copy of Simson the following applies:
+
+1. Simson comes with no guarantees whatsoever.
+
+2. If results obtained by using Simson are published the authors would like
+   an acknowledgement e.g. in the form of referencing this code manual.
+
+3. Simson or parts of Simson may not be sold, distributed or
+   in any other way made available to third parties without a written
+   permission from the authors.
+
+4. Problems can be reported to the authors by email (see below), but no
+   action is promised.
+
+5. This copyright file must not be removed or modified.
+
+
+Contact information:
+
+Address:        KTH Mechanics
+                Osquars Backe 18 
+                SE-100 44 Stockholm
+                Sweden
+
+
+Email:          henning@mech.kth.se
+                mattias@mech.kth.se
+                pschlatt@mech.kth.se
+                luca@mech.kth.se
+
+
+******************************************************************************
+
+
+

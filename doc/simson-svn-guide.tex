@@ -1,0 +1,555 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%$HeadURL$
+%$LastChangedDate$
+%$LastChangedBy$
+%$LastChangedRevision$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% To compile this document do the following:
+%
+%   pdflatex simson-svn-guide
+%   bibtex simson-svn-guide
+%   pdflatex simson-svn-guide
+%   pdflatex simson-svn-guide
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt,a4paper]{simson}
+\usepackage[swedish,english]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage[latin1]{inputenc}
+\usepackage[colorlinks=true, pdfstartview=FitV, linkcolor=blue, citecolor=blue, urlcolor=blue, pdfkeywords={DNS, Simson, subversion, svn}, pdfauthor={}, pdftitle={User Guide. Produced from $Rev$}]{hyperref}
+
+% Set graphics path
+\graphicspath{{./figures/}}
+
+\title{\textbf{SIMSON}\\Subversion Quickstart\\ $Rev$}
+
+\author{}
+
+\kthno{}
+\kthcoverpicture{figures/freestream_front}
+\kthinnerbackone{The front page image is a visualization of laminar-turbulent transition induced by ambient free-stream turbulence convected above a flat plate, \emph{i.e.}\ so-called bypass transition \citep{Brandt-Schlatter-Henningson:2004}. The large-eddy simulation used to generate the image \citep{schlatter_brandt_henningson_abstract_2006} is performed with \esoft{Simson} using the ADM-RT subgrid-scale model \citep{schlatter_stolz_kleiser_2004}, further postprocessed using the program \esoft{lambda2} and rendered using \esoft{OpenDX}. Low and high speed streaks are visualized with blue and red isocontours, respectively; green and yellow isocontours indicate the $\lambda_2$ vortex identification criterion \citep{jeong_hussain_1995}. The flow is from lower left to upper right.}
+\kthinnerbacktwo{This user guide is compiled from $Rev$.}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents*
+
+
+% ####################################################################
+\chapter{Introduction}
+% ####################################################################
+\setcounter{page}{1}\pagenumbering{arabic} To ease the development of
+\esoft{Simson} the version control system \esoft{Subversion} has been
+used. \esoft{Subversion} works by keeping all source files including
+their history in a database called a repository where the data is
+stored in an efficient manner.
+
+Each developer has their own private working copy of the files. Each
+working copy directory contains a special directory named \epath{.svn}
+where some administrative files are stored. The developer decides when
+and how to synchronize the working copy with the repository.
+
+Read and write access to the repository can be specified to certain
+directories for certain users if needed. This allows developers,
+responsible for different parts of the code, to work independently.
+
+In this report follows a short description on how to use
+\esoft{Subversion} and the most common commands. The entire
+\esoft{Subversion} book/manual can be found in \cite{svn-book}.
+
+
+% ####################################################################
+\chapter{Getting started}
+% ####################################################################
+
+% ====================================================================
+\section{Creating a working copy root directory}
+% ====================================================================
+The following command creates a new working directory \epath{simson}
+and puts the latest source code from the \esoft{Simson} trunk
+repository there:
+\begin{verbatim}
+  svn checkout https://www2.mech.kth.se/svn/simson/trunk simson
+\end{verbatim}
+The \ecommand{checkout} subcommand is only used when you want to
+create a new private working copy from scratch.
+
+Now you can edit the files in the \epath{simson} directory. Changes in
+this directory do not affect other developers. The local \efile{.svn}
+directories contain administrative files that \esoft{Subversion} uses
+to keep track of your files and should not be changed.
+
+
+% ====================================================================
+\section{The most commonly used Subversion subcommands}
+% ====================================================================
+
+% --------------------------------------------------------------------
+\subsection{General work flow}
+% --------------------------------------------------------------------
+This is the most often used \esoft{Subversion} commands and the
+general work flow goes through the following items. Each command is
+described in the following sections.
+
+Update your working copy:
+\begin{itemize}
+\item svn update
+\end{itemize}
+
+Make changes:
+\begin{itemize}
+\item svn add
+\item svn delete
+\item svn copy
+\item svn move
+\end{itemize}
+
+Examine your changes:
+\begin{itemize}
+\item svn status
+\item svn diff
+\item svn revert
+\item tkdiff (svn-aware graphical diff frontend)
+\end{itemize}
+
+Merge others' changes into your working copy:
+\begin{itemize}
+\item svn update (IMPORTANT!)
+\item svn resolved
+\end{itemize}
+
+Commit your changes:
+\begin{itemize}
+\item svn commit
+\end{itemize}
+
+Note that it is crucial that you update your copy of the repository
+before you commit your changes. Otherwise changes committed by others
+between the previous update of your copy and now could be lost.
+
+
+% --------------------------------------------------------------------
+\subsection{Getting help}
+% --------------------------------------------------------------------
+If you want a list of all \esoft{Subversion} subcommands, use
+\ecommand{help}:
+\begin{verbatim}
+  svn help
+\end{verbatim}
+Type \ecommand{svn help subcommand} for help on a specific subcommand.
+
+Most subcommands take file and/or directory arguments, recursing on
+the directories. If no arguments are supplied, it will recurse on the
+current directory (inclusive) by default. Available subcommands are
+(aliases are given within parentheses):
+\begin{verbatim}
+  add
+  blame (praise, annotate, ann)
+  cat
+  checkout (co)
+  cleanup
+  commit (ci)
+  copy (cp)
+  delete (del, remove, rm)
+  diff (di)
+  export
+  help (?, h)
+  import
+  info
+  list (ls)
+  log
+  merge
+  mkdir
+  move (mv, rename, ren)
+  propdel (pdel, pd)
+  propedit (pedit, pe)
+  propget (pget, pg)
+  proplist (plist, pl)
+  propset (pset, ps)
+  resolved
+  revert
+  status (stat, st)
+  switch (sw)
+  update (up)
+\end{verbatim}
+
+
+% --------------------------------------------------------------------
+\subsection{Examining and comparing working copy with the repository}
+% --------------------------------------------------------------------
+The most commonly used subcommand reports what files you have modified
+in your working directory among other things:
+\begin{verbatim}
+  svn status
+\end{verbatim}
+The \ecommand{status} subcommand and many other subcommands works
+recursively on directories (by default the current working
+directory). If you want the status of a named directory or a single
+file you add the name of that file or directory. For instance:
+\begin{verbatim}
+  svn status mydirectory/myfile.f
+\end{verbatim}
+There is an important extra flag to the \ecommand{status} subcommand:
+\ecommand{-u}. The \ecommand{-u} flag is used to display pending
+updates from the repository.
+\begin{verbatim}
+  svn status -u -v mydirectory/myfile.f
+\end{verbatim}
+To view the history of a file or directory, use the \ecommand{log}
+subcommand. This shows who changed the file, when they did it and the
+log message they provided to describe their changes.
+\begin{verbatim}
+  svn log
+\end{verbatim}
+The \ecommand{diff} subcommand examines the difference between your
+working copy and the repository more in detail. The output is similar
+to the output of the Unix command \ecommand{diff}; \emph{e.g.}
+\begin{verbatim}
+  svn diff afortranfile.f
+\end{verbatim}
+A graphical frontend to \ecommand{diff} is the freely available \ecommand{tkdiff}, which is svn-aware. For example,
+\begin{verbatim}
+  tkdiff afortranfile.f
+\end{verbatim}
+displays all local changes of the given file since the last update, whereas
+\begin{verbatim}
+  tkdiff -r100 afortranfile.f
+\end{verbatim}
+shows all the changes compared to revision 100 in the repository.
+
+
+% --------------------------------------------------------------------
+\subsection{Undoing changes to the working copy}
+% --------------------------------------------------------------------
+If you want to undo your changes to some file or directory in your
+working copy there is a convenient way. Use \ecommand{revert}:
+\begin{verbatim}
+  svn revert myfile.f
+\end{verbatim}
+After the \ecommand{revert} subcommand has finished the working copy
+has the same state as when you did \ecommand{update} or
+\ecommand{checkout} the last time.
+
+The \ecommand{revert} subcommand may also be applied to several files
+at once, or an entire directory. Because the \ecommand{revert}
+subcommand reverts to the mirror-copy kept in the \efile{.svn}
+directories it works even when there is no network connection to the
+repository, such as when working with a laptop.
+
+
+% --------------------------------------------------------------------
+\subsection{Updating working copy}
+% --------------------------------------------------------------------
+The \ecommand{update} subcommand updates your working copy and the
+\efile{.svn} directories with the latest changes to the repository.
+
+All files in your current working directory and below are updated. If
+you have also changed the contents of your working copy the repository
+changes are merged with your changes.
+\begin{verbatim}
+  svn update
+\end{verbatim}
+Again, you may update a single file or directory by naming it:
+\begin{verbatim}
+  svn update mydirectory/myfile.f
+\end{verbatim}
+Note that you can run \ecommand{status -u} to get a list of all
+updates available in the repository. This is a good way to predict
+what \ecommand{update} will do.
+
+The \ecommand{update} subcommand is also used when you want to
+retrieve an old version of some file(s) from the repository; \emph{e.g.}\ to
+get the repository version of \ecommand{myfile.f} as it was on the
+6:th of October 2004 you write:
+\begin{verbatim}
+  svn update -r '{20041006}' mydirectory/myfile.f
+\end{verbatim}
+In some cases \ecommand{update} will fail to merge changes to the
+repository with your local changes. If \ecommand{update} or
+\ecommand{status} lists a file with a ``C'' in front this means that
+you need to merge the reported file(s) manually.
+
+
+% --------------------------------------------------------------------
+\subsection{Committing modified files into the repository}
+% --------------------------------------------------------------------
+The \ecommand{commit} subcommand updates the repository with your
+changes.
+\begin{verbatim}
+  svn commit -m 'New adiabatic boundary condition added'
+\end{verbatim}
+This commits all files in the current directory and below
+recursively. You may also commit a single file or directory by naming
+it:
+\begin{verbatim}
+  svn commit mydirectory/somefile.f -m 'Fixed memory leak problem'
+\end{verbatim}
+Note that \ecommand{commit} will safely fail if you do not have
+write access to all corresponding files in the repository.
+
+
+% ====================================================================
+\section{Other useful subcommands}
+% ====================================================================
+
+% --------------------------------------------------------------------
+\subsection{Commands for moving, removing, and adding files}
+% --------------------------------------------------------------------
+If you add or delete files from your working copy you need to
+explicitly tell \esoft{Subversion} about this. The subcommands
+\ecommand{add}, \ecommand{move}, \ecommand{copy} and \ecommand{delete}
+are used for this. See \ecommand{svn help xxx} for help on these
+subcommands. The \ecommand{rename} subcommand is an alias for
+\ecommand{move}.
+
+As usual, the repository is not changed when you apply these commands
+on your working copy. When you do \ecommand{svn commit} the repository
+changed.
+
+
+% --------------------------------------------------------------------
+\subsection{Adding the keywords to a new file}
+% --------------------------------------------------------------------
+\esoft{Subversion} can substitute certain information directly into
+the files. This is done by putting keywords inside the file. When you
+add a new file for version control, put the following lines in the
+beginning of that file:
+\begin{verbatim}
+  $HeadURL$
+  $LastChangedDate$
+  $LastChangedBy$
+  $LastChangedRevision$
+\end{verbatim}
+You must tell \esoft{Subversion} which keywords to look for. This is
+done through the following command (on one line):
+\begin{verbatim}
+  svn propset svn:keywords 'LastChangedBy LastChangedDate
+  LastChangedRevision HeadURL' filename
+\end{verbatim}
+Another important keyword is the ignore tag. This is set/changed for
+the current directory through the command
+\begin{verbatim}
+  svn propedit svn:ignore .
+\end{verbatim}
+and then editing the file names in the editor window. In general,
+properties of a specific file or directory are displayed by
+\begin{verbatim}
+  svn proplist <FILE>
+  svn propget <PROPERTY> <FILE>
+\end{verbatim}
+
+
+% --------------------------------------------------------------------
+\subsection{Looking inside the repository}
+% --------------------------------------------------------------------
+Because the \esoft{Subversion} repository is stored in a database file
+on a remote server machine you cannot look at the repository files
+using Unix/Linux \ecommand{ls} command. Instead you must use the
+\esoft{Subversion} subcommand \ecommand{ls}.
+\begin{verbatim}
+  svn ls https://www2.mech.kth.se/svn/simson/releases
+\end{verbatim}
+Note that many \esoft{Subversion} subcommands that take a working copy
+directory as an argument may also take a repository URL as an
+argument.
+
+
+% --------------------------------------------------------------------
+\subsection{Exporting source code}
+% --------------------------------------------------------------------
+To export the source code from a \esoft{Subversion}
+working copy into a source code tree without the \efile{.svn}
+directories there is a convenient command:
+\begin{verbatim}
+  svn export mydirectory simson-export
+\end{verbatim}
+This creates a new directory \efile{simson-export} with your source
+code in it. The only thing \ecommand{export} does is to copy all files
+recursively from your working copy (or from a repository URL) into a
+new directory, omitting all \efile{.svn} directories.
+
+
+% ====================================================================
+\section{Manually merging a conflict}
+% ====================================================================
+When \ecommand{svn status} reports a file or directory with a ``C'' in
+front of the filename this means that there is a conflict that
+\esoft{Subversion} cannot resolve. This could happen if you and
+another developer have simultaneously changed the same lines in the
+same file. When the other developer commits his changes and you update
+your working copy \esoft{Subversion} finds the conflict which you have
+to resolve manually.
+
+To resolve a conflict simply edit the conflicting file and then save
+it. To help you out, \esoft{Subversion} has written both your
+modifications and the modifications from the repository into the
+file. In addition, \esoft{Subversion} has saved your file and the
+repository's file in your working copy directory (\efile{.mine} and
+\efile{.Rxxx} respectively). Note that you need to remove the two
+additional files before you can commit your file.
+
+
+% ====================================================================
+\section{Branches}
+% ====================================================================
+Branches are versions of any file or directory that were forked from
+another version of the same file or directory and are subsequently
+developed further independent of the original version. A branch can
+\emph{e.g.}\ include additional features that are not (yet) meant to be part
+of the original file/directory version. Branches are kept in the
+directory \epath{branches}. To create a branch, simply copy the base
+version to the branch directory, \emph{e.g.}\ from the \efile{trunk/bla}
+directory
+\begin{verbatim}
+  svn copy trunk/bla branches/bla-branch
+\end{verbatim}
+followed by a commit of the new branch via
+\begin{verbatim}
+  svn commit trunk/bla-branch -m'Created new branch bla-branch, based on revision XXX'
+\end{verbatim}
+It is very important to state in the commit comment from which
+revision the branch was created. \esoft{Subversion} will not keep
+track of that essential information. Note that the commit will create
+a new revision which will overwrite the revision information in the
+newly copied files.
+
+The main advantage of using branches comes from the fact that it is
+possible to keep a branch copy updated with respect to the original
+version (\emph{i.e.}\ the one the branch was based upon). To update a branch,
+use
+\begin{verbatim}
+  svn merge -rXXX:YYY trunk/bla/bla.f branches/bla-branch/bla.f
+\end{verbatim}
+The two revision \ecommand{XXX} and \ecommand{YYY} are essential: They
+specify that all the changes in \efile{trunk/bla/bla.f} made between
+revisions \ecommand{XXX} and \ecommand{YYY} should be included in
+\efile{branches/bla-branch/bla.f}. A merge will probably create some
+conflicts which have to be resolved manually. As mentioned above, when
+committing the merged version, it is essential to include in the
+comment information about the revision numbers the merge was based
+on. \esoft{Subversion} will not keep track of this
+information. Therefore, use a comment similar to
+\begin{verbatim}
+  svn commit -m'merged <files> with trunk revisions from XXX to YYY' <files>
+\end{verbatim}
+
+In this way, for a subsequent merge, the logs can be used to determine
+up to which revision number a merge has already been performed.
+
+
+% ====================================================================
+\section{Private configuration file}
+% ====================================================================
+After running \ecommand{svn} for the first time you will have a
+directory in your home directory named \efile{.subversion}. This
+directory contains the file \efile{.subversion/config} can be edited
+to customize \esoft{Subversion} behavior.
+
+
+% ####################################################################
+\chapter{Examples}
+% ####################################################################
+Below follows common examples of \esoft{Subversion} subcommands.
+
+Create a new working copy root directory
+\begin{verbatim}
+  svn checkout https://www2.mech.kth.se/svn/simson/trunk Simson
+\end{verbatim}
+List your modifications to the working copy.
+\begin{verbatim}
+  svn status somedirectory
+\end{verbatim}
+List modifications to the repository and predict what
+\ecommand{update} would do.
+\begin{verbatim}
+  svn status -u somedirectory
+\end{verbatim}
+Update your working copy with modifications to the repository.
+\begin{verbatim}
+  svn update somefile.f90
+\end{verbatim}
+Update the repository with modifications to your working copy of a
+file.
+\begin{verbatim}
+  svn commit -m 'Your log-message here' somefile.f90
+\end{verbatim}
+Get an old version of a file from the repository.
+\begin{verbatim}
+  svn update -r '{20041006}' somefile.f90
+\end{verbatim}
+Undo modifications to the working copy.
+\begin{verbatim}
+  svn revert somefile.f90
+\end{verbatim}
+List history of a file.
+\begin{verbatim}
+  svn log somefile.f90
+\end{verbatim}
+List details of your modifications to a working copy file.
+\begin{verbatim}
+  svn diff somefile.f90
+\end{verbatim}
+List differences between your working copy and an old repository
+version of a file.
+\begin{verbatim}
+  svn diff -r '{20041006}' somefile.f90
+\end{verbatim}
+List differences between two old repository versions of a file.
+\begin{verbatim}
+  svn diff -r '{20041006}:{20040930}' somefile.f90
+\end{verbatim}
+List differences between two old repository version r110 and r120 of a
+file.
+\begin{verbatim}
+  svn diff -r 110:120 somefile.f90
+\end{verbatim}
+List files in the repository.
+\begin{verbatim}
+  svn ls https://www2.mech.kth.se/svn/simson/
+\end{verbatim}
+Rename a file/directory.
+\begin{verbatim}
+  svn mv somefile.f90 newname.f90
+\end{verbatim}
+Put a new file/directory under version control.
+\begin{verbatim}
+  svn add somefile.f90
+\end{verbatim}
+Remove a file/directory.
+\begin{verbatim}
+  svn delete somefile.f90
+\end{verbatim}
+Export a source code tree for distribution to a user/customer.
+\begin{verbatim}
+  svn export https://www2.mech.kth.se/svn/simson/releases/mydir mydir
+\end{verbatim}
+View who has written specific parts of a file
+\begin{verbatim}
+  svn blame somefile.f90
+\end{verbatim}
+To resurrect an earlier deleted file (from revison 972)
+\begin{verbatim}
+  svn cp -r972 https://www2.mech.kth.se/svn/simson/trunk/myfile myfile
+\end{verbatim}
+To merge changes in trunk version of bla from revision 687 to 691 to
+one branch copy of bla
+\begin{verbatim}
+  svn merge -r687:691 bla/bla.f ../branches/bla2dparallel/bla.f
+\end{verbatim}
+And finally to get help
+\begin{verbatim}
+  svn help
+\end{verbatim}
+
+\newpage
+
+\bibliographystyle{simson}
+\bibliography{fluids}
+
+\end{document}

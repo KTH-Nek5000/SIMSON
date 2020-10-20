@@ -1,0 +1,5 @@
+README file for the Simson Matlab tools $Rev$
+
+Description of Matlab tools
+===========================
+readdns        - Reads in a velocity field into Matlab

@@ -1,0 +1,60 @@
+********************************************************************************
+This directory contains ParaView python scripts                     $Rev$
+
+
+Installation prerequisites
+==========================
+% On the Mechanics system load the ParaView module
+module load paraview
+
+% Make sure that you include the ParaView libraries in your
+% LD_LIBRARY_PATH if starting the script from regular python. For
+% ParaView 3.8.1RC this is achieved by export
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/pkg/paraview/3.8.1-RC1/lib/paraview-3.8
+
+% When running from regular python 
+% PYTHONPATH also needs to be updated
+export PYTHONPATH=$PYTHONPATH:/pkg/paraview/3.8.1-RC1/bin:/pkg/paraview/3.8.1-RC1/lib/paraview-3.8/site-packages/paraview:/pkg/paraview/3.8.1-RC1/lib/paraview-3.8/site-packages/paraview/vtk
+
+% If having local installation of ParaView make sure lib directory
+% follows bin directory structure since a relative link is used to
+% find libs from executable location
+
+
+Running the scripts
+===================
+% Starting the image rendering by executing (in this case pvpython
+% interpreter is used which sets up proper paths etc.
+./driver.py
+
+% Alternatively
+./driver.py movie.dat
+
+
+% Alternatively use regular python when starting the rendering
+python driver.py
+
+pvpython paraviewscripts/single_frame_hairpin_contour.py image_test traj_transient.dat glob_transient.dat
+
+
+Generating the movie
+====================
+% On anzer the script ffmpeg is installed. Otherwise easy to install
+% yourself...
+ffmpeg -sameq -r 20 -i frame_hairpin_%04d.png hairpin_01.mp4
+
+% Play movie with mplayer
+mplayer hairpin_01.mp4 -loop 0
+
+
+
+Running ParaView in parallel
+============================
+Start up the server in parallel
+
+mpirun -np 2 pvserver 
+
+Add the option --use-offscreen-rendering if necessary (MESA libraries will be used)
+
+
+********************************************************************************
