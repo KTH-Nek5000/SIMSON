@@ -113,6 +113,7 @@ obj   = $(dep) $(idep) $(ppar)
 
 # determining target architecture
 arch=$(shell uname)
+arch=Linux_gfortran
 
 # Special machines: 
 # Mekanik with 32bit AMD processors (e.g. gampen)
@@ -248,7 +249,7 @@ endif
 #  **********************************************************************
 
 ifeq "$(arch)" "Linux_gfortran"	
-	CFLAGS = -fdefault-real-8 -cpp -O3 -DLINUX_GFORTRAN
+	CFLAGS = -std=legacy -fdefault-real-8 -cpp -O3 -DLINUX_GFORTRAN
 	ifeq "$(mpi)" "yes"
 		FCC = mpif90
 		ifeq "$(omp)" "yes"
