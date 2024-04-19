@@ -13,7 +13,7 @@
 #F90   = pgf90
 #FLAGS = -r8 -O3
 F90   = gfortran
-FLAGS = -fdefault-real-8 -O3
+FLAGS = -std=legacy -fdefault-real-8 -O3
 
 # main program, FFTs and plot routines
 main  = pxyst
