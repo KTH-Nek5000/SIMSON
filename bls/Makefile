@@ -11,7 +11,7 @@
 #F90   = ifort
 #FLAGS = -r8 -i4 -O3 -warn truncated_source -warn unused
 F90   = gfortran
-FLAGS = -fdefault-real-8 -O3
+FLAGS = -std=legacy -fdefault-real-8 -O3
 
 
 # main program and FFTs
