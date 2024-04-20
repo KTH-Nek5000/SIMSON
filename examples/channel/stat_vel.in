@@ -1,0 +1,25 @@
+1    u
+2    v
+3    w
+4    u_rms
+5    v_rms
+6    w_rms
+13   uv
+14   uw
+15   vw
+7    omx
+8    omy
+9    omz
+10   omx_rms
+11   omy_rms
+12   omz_rms
+31   p
+32   prms
+33   pu
+34   pv
+-14  ux
+-61  uxx
+-115 px
+-53  urms2,x
+-117 skewness u
+-120 flatness u
