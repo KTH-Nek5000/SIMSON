@@ -40,7 +40,10 @@ Installing
 ==========
 Compile using make in each subdirectory the various codes. Make sure to
 adapt par.f in each subdirectory. For bla there are additional compilation
-options such as omp, mpi and arch.
+options such as omp, mpi and arch. Concretely, in the directories bls, pxyst, lambda2, rit, just type
+> make
+In the bla directory, type for an OpenMP parallel case
+> make omp=yes
 
 As discussed, before starting to compile the code the resolution and some other
 compile-time parameters have to be chosen for the flow problem that
