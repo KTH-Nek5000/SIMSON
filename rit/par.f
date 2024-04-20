@@ -23,7 +23,7 @@ c     ======================
 c
 c     Number of spectral modes
 c
-      parameter (nx=32,ny=33,nz=32)
+      parameter (nx=64,ny=65,nz=64)
 c
 c     Number of processors (MPI)
 c

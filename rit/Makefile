@@ -12,9 +12,9 @@
 #FLAGS = -r8 -i4 -O3 -warn truncated_source -warn unused
 #FLAGS0= $(FLAGS)
 # if compiled with gfortran, use -O0 for plot1.f and cont5.f
-F90   = gfortran
-FLAGS = -std=legacy -fdefault-real-8 -O3
-FLAGS0= -std=legacy -fdefault-real-8 -O0
+F90   = gfortran -std=legacy
+FLAGS = -fdefault-real-8 -O3
+FLAGS0= -fdefault-real-8 -O0
 
 # main program, FFTs and plot routines
 main  = rit
