@@ -89,8 +89,8 @@ c
          else if (j.gt.11+6*scalar) then
             j=j-11
             j1 = mod(j-1,6)+1
-            write(*,'(i5,f12.5,f10.5,a3,i3,i3)') i,corrxx(i),corryy(i),
-     &           'TT',mod(j1-1,scalar)+1,(j1-1)/scalar+1
+c            write(*,'(i5,f12.5,f10.5,a3,i3,i3)') i,corrxx(i),corryy(i),
+c     &           'TT',mod(j1-1,scalar)+1,(j1-1)/scalar+1
          else if (j.le.11) then
             write(*,'(i5,f12.5,f10.5,a3)') i,corrxx(i),corryy(i),
      &           cc(j)

@@ -38,7 +38,8 @@ c
       integer pdim(nxys,2),pdim2(nxys2,2)
       integer thdim(nxysth,3),thdim2(nxysth2,3)
 
-      equivalence(totxys,pxys)
+c     removed because of some memory problems
+c      equivalence(totxys,pxys)
 
       character*1 ans
       character*80 namxys,xmat
@@ -166,6 +167,7 @@ c
      &     fltype,bstart,blength,rlam,spanv,namxys,w,pdim,thdim,pr,
      &     scalarind,mhd_n)
 
+      
 c
 c     When reading correlation file
 c
@@ -223,7 +225,8 @@ c
       call pvar(pxys,pxys2,pxysth,pxysth2,nxys2,nxysth2,
      &     totxys,totxysth,xl,zl,eta,re,dstar,pr,scalarind,mhd_n,
      &     firstmax)
-c
+
+c     
 c     Find local skin friction and displacement thickness
 c
       write(*,*) 'doing locsc'

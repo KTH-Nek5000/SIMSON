@@ -43,7 +43,6 @@ c
 c
 c     Initialize transforms and wave numbers
 c
-
       call vrffti(nx,prex,0)
       call vcosti(nyp,prey,0)
       do x=1,nx/2+1
@@ -53,7 +52,9 @@ c
 c     First turn data upside down
 c
       do i=1,nxys
-         do y=1,(nyp-1)/2
+c     this line was replace because the equivalence statement was removed
+c     do y=1,(nyp-1)/2
+         do y=1,nyp
             do x=1,nx
                dummy = totxys(x,nyp+1-y,i)
                pxys(x,nyp+1-y,i) = totxys(x,y,i)
