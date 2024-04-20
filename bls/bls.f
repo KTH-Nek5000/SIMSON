@@ -635,10 +635,10 @@ c
 c     Compute analytical solution and scale it so that the streamwise 
 c     velocity is equal to 1 at the top of the computational domain
 c     
-c            usuc(y)=(1.-exp(-ysuc))/(1.-exp(-h2))
+            usuc(y)=(1.-exp(-ysuc))/(1.-exp(-h2))
 c           
 c     For the classical analytical solution use the line below
-           usuc(y)=1.-exp(-ysuc)
+c           usuc(y)=1.-exp(-ysuc)
 c      
          end do
          do y=1,nyp
