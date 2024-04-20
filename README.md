@@ -18,22 +18,22 @@ See COPYRIGHT file.
 
 Content of main directories of Simson
 =====================================
-. bla       - Main program
-. bls       - Program to generate initial velocity (with or without heat) fields
-. common    - Common subroutines between programs
-. doc       - Documentation
-. examples  - Example flow cases
-. matlab    - Matlab scripts
-. pxyst     - Program to do xy statistics plotting
-. rit       - Program to plot solutions from complete velocity fields
-. lambda2   - Program co compute lambda2, Q for visualisation
+- bla       - Main program
+- bls       - Program to generate initial velocity (with or without heat) fields
+- common    - Common subroutines between programs
+- doc       - Documentation
+- examples  - Example flow cases
+- matlab    - Matlab scripts
+- pxyst     - Program to do xy statistics plotting
+- rit       - Program to plot solutions from complete velocity fields
+- lambda2   - Program co compute lambda2, Q for visualisation
 
 
 Root directory files of Simson
 ==============================
-COPYRIGHT - Copyright and contact information document
-README    - This document
-todo.txt  - A text file including things to correct/fix/add etc.
+- COPYRIGHT - Copyright and contact information document
+- README    - This document
+- todo.txt  - A text file including things to correct/fix/add etc.
 
 
 Installing
