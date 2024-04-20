@@ -16,7 +16,7 @@ F90     = gfortran
 
 # add -r8 for full double precision
 #FLAGS   = -O3 -fpp -openmp -warn truncated_source -warn unused
-FLAGS   = -cpp -fopenmp -fdefault-real-8 -O3
+FLAGS   = -cpp -fopenmp -fdefault-real-8 -O3 -std=legacy
 
 
 # Main program and FFTs
