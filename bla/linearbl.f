@@ -24,8 +24,7 @@ c ***********************************************************************
      &     diags,diags2,gplane,filtxz,filtxz2,
      &     lpfxz,lpfxz2,zbp,ihighorder,cs,my_node,tbc,
      &     dtheta0_upp,dtheta0_low,d2th_bc,fth_bc,dth3r_bc,dth3i_bc,
-     &     dth3r_bc2,dth3i_bc2,theta0_low,theta0_upp,cflux,mflux,vsuc,
-     &     wallthr,wallthi)
+     &     dth3r_bc2,dth3i_bc2,theta0_low,theta0_upp,cflux,mflux,vsuc)
 c
 c     Advances all velocites a timestep (substep in case of rk3)
 c     with the nonlinear terms calculated in step 2 as a driving force

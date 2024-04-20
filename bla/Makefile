@@ -113,6 +113,9 @@ obj   = $(dep) $(idep) $(ppar)
 
 # determining target architecture
 arch=$(shell uname)
+
+
+# default machine
 arch=Linux_gfortran
 
 # Special machines: 

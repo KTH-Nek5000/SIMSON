@@ -1335,7 +1335,7 @@ c     The base flow is only needed for spatial simulations or
 c     for cases where the boundary conditions are set by the base flow,
 c     i.e. ibc=100,101,110,120,130,140,150.
 c
-      if ( fltype.eq.-3.or.fltype.eq.-2.or.fltype.eq.-1.or.
+      if ( fltype.eq.-3333.or.fltype.eq.-2.or.fltype.eq.-1.or.
      &     fltype.eq.3.or.fltype.eq.4.or.
      &     fltype.eq.5.or.fltype.eq.6.or.
      &     fltype.eq.7.or.fltype.eq.8.or.
