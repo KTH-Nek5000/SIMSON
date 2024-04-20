@@ -18,23 +18,15 @@ See COPYRIGHT file.
 
 Content of main directories of Simson
 =====================================
-bla       - Main program
-bls       - Program to generate initial velocity (with or without heat) fields
-cmp       - Program to subtract and compare velocity fields
-config    - Contains configuration files for different systems
-common    - Common subroutines between programs
-doc       - Documentation
-examples  - Example flow cases
-fou       - Program to Fourier transform velocity fields in time
-matlab    - Matlab scripts
-pamp      - Programs to plot amplitude data from one or more amplitude files
-paraview  - Scripts to generate ParaView based animations
-pext1     - Program to plot a number of components from an extremum file
-pxyst     - Program to do xy statistics plotting
-rit       - Program to plot solutions from complete velocity fields
-rps       - Program to plot planes
-xys_add   - Program to compute xyz statistics
-lambda2   - Program co compute lambda2, Q for visualisation
+. bla       - Main program
+. bls       - Program to generate initial velocity (with or without heat) fields
+. common    - Common subroutines between programs
+. doc       - Documentation
+. examples  - Example flow cases
+. matlab    - Matlab scripts
+. pxyst     - Program to do xy statistics plotting
+. rit       - Program to plot solutions from complete velocity fields
+. lambda2   - Program co compute lambda2, Q for visualisation
 
 
 Root directory files of Simson
