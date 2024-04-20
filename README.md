@@ -61,5 +61,6 @@ Usually, the stacksize of the shell needs to be extended, e.g. using
 The visualisation codes typically require an xterm. Thus run rit, pxyst, etc.
 from an xterm (rather than the built in terminal).
 
+A good starting point is the example case "channel" in the examples directory. A step by step readme file guides you through running the first case.
 
 ********************************************************************************
